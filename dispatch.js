@@ -40,15 +40,12 @@ exports.process = function(phrase) {
   });
   Q.allSettled(searchers).then(function(results) {
     console.log('All settled');
-    var final_results = [];
+    var final_result = {};
     _.map(results, function(result) {
       var val = result.value;
-      var str =  val.type;
-      var d = {};
-      d[str] = val;
-      final_results.push(d);
+      final_result[val.type] = val;
     });
-    deferred.resolve(final_results);
+    deferred.resolve(final_result);
   });
   return deferred.promise;
 }
