@@ -7,5 +7,7 @@ exports.index = function(req, res) {
 }
 
 exports.query = function(req, res) {
-  res.send(dispatch.process(req.params.q));
+  dispatch.process(req.query.q).then(function(result) {
+    res.send(result);
+  });
 }
