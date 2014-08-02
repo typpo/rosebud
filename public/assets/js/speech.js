@@ -306,7 +306,7 @@ function maybeSendContextRequest(event) {
   return true;
 }
 
-//startButton({timestamp: 'test'});
+startButton({timestamp: 'test'});
 
 var debugEvent = {
   resultIndex: 0,
@@ -321,4 +321,4 @@ var debugEvent = {
     }]
   ]};
 
-maybeSendContextRequest(debugEvent);
+//maybeSendContextRequest(debugEvent);
