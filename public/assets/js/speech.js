@@ -263,8 +263,7 @@ function showButtons(style) {
 function getContext(results) {
   $.ajax({
     type: 'GET',
-    url: '/search',
-    q: results,
+    url: '/search?q=' + JSON.stringify(results),
     dataType: 'json',
     success: function(data) {
       console.log(data);
