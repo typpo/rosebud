@@ -13,6 +13,8 @@
     "googleapis": "latest",
     "google": "latest",
     "q": "latest",
-    "freebase": "latest"
+    "freebase": "latest",
+    "underscore": "latest",
+    "stopwords": "latest"
   }
 }
