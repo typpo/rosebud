@@ -15,9 +15,9 @@ exports.query = function(req, res) {
     return;
   }
   var requests = JSON.parse(query);
-  requests = filter.run(requests);
+  var bestRequest = filter.run(requests);
 
-  dispatch.process(requests).then(function(result) {
+  dispatch.process(bestRequest).then(function(result) {
     res.send(_.flatten(result));
   });
 }
