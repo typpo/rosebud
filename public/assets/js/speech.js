@@ -147,10 +147,12 @@ if (!('webkitSpeechRecognition' in window)) {
   recognition.onresult = function(event) {
     var interim_transcript = '';
     for (var i = event.resultIndex; i < event.results.length; ++i) {
+      var transcript = event.results[i][0].transcript;
       if (event.results[i].isFinal) {
-        final_transcript += event.results[i][0].transcript;
+        final_transcript += transcript;
       } else {
-        interim_transcript += event.results[i][0].transcript;
+        getContext(transcript);
+        interim_transcript += transcript;
       }
     }
     final_transcript = capitalize(final_transcript);
@@ -251,4 +253,20 @@ function showButtons(style) {
   email_button.style.display = style;
   copy_info.style.display = 'none';
   email_info.style.display = 'none';
+}
+
+/**
+ * Talk to the backend with the speech that we have and get results.
+ */
+function getContext(result) {
+  console.log(result);
+  $.ajax({
+    type: 'POST',
+    url: '/search',
+    q: result,
+    dataType: 'json',
+    success: function(data) {
+      console.log(data);
+    }
+  });
 }
