@@ -14,9 +14,10 @@ exports.query = function(req, res) {
     res.send({error: 'i dont understnand u'});
     return;
   }
-  query = filter.run(query);
+  var requests = JSON.parse(query);
+  requests = filter.run(requests);
 
-  dispatch.process(query).then(function(result) {
+  dispatch.process(requests).then(function(result) {
     res.send(_.flatten(result));
   });
 }
