@@ -7,14 +7,15 @@ var google = require('google'),
 
 /** Constants **/
 var FREEBASE_KEY_OBJ = {key: 'AIzaSyCvQC_qRXBQDkrP_0dLLKZ3mDU1stM5VEM'};
-var ENABLED_SEARCH_ENGINES = [search_google,
-                          search_freebase,
-                          search_freebase_image,
-                          search_freebase_definitions,
-//                          search_freebase_related,
-                          search_freebase_wiki_link,
-//                          search_freebase_geo,
-];
+var ENABLED_SEARCH_ENGINES = {
+                          'google': search_google,
+                          'freebase': search_freebase,
+                          'image': search_freebase_image,
+                          'defs': search_freebase_definitions,
+                          'related': search_freebase_related,
+                          'wiki': search_freebase_wiki_link,
+                          'geo': search_freebase_geo,
+};
 /** Library setup **/
 google.resultsPerPage = 1;
 
@@ -23,24 +24,38 @@ google.resultsPerPage = 1;
 /* Takes a phrase and determines the best queries to dispatch. */
 exports.process = function(phrase) {
   console.log('Processing', phrase);
-  return Q.all(ENABLED_SEARCH_ENGINES.map(function(fn) {
+  var deferred = Q.defer();
+  var searchers = _.map(ENABLED_SEARCH_ENGINES, function(fn, key) {
+    console.log('running for', key);
     return fn(phrase);
-  }));
+  });
+  Q.allSettled(searchers).then(function(results) {
+    var final_results = [];
+    results.map(function(result) {
+      var val = result.value;
+      var str =  val.type;
+      var d = {};
+      d[str] = val;
+      final_results.push(d);
+    });
+    deferred.resolve(results);
+  });
+  return deferred.promise;
  /*
   var deferred = Q.defer();
   var results = [];
-  ENABLED_SEARCH_ENGINES.map(function(fn) {
-    fn(phrase).then(function(result) {
+  _.each(ENABLED_SEARCH_ENGINES, function(fn, key) {
+    var add = function(result) {
+      console.log("FUCK");
       results.push(result);
-      console.log(results.length, '/', ENABLED_SEARCH_ENGINES.length);
       if (results.length == ENABLED_SEARCH_ENGINES.length) {
-        console.log('resolving');
-        deferred.resolve(results);
+        deferred.resolve({key: results});
       }
-    });
+    }
+    fn(phrase).then(add, add);
   });
   return deferred.promise;
-  */
+ */
 }
 
 /** Private fns **/
@@ -50,7 +65,7 @@ function search_google(term) {
   var deferred = Q.defer();
   google(term, function(err, next, links) {
     if (!err && links.length > 0) {
-      deferred.resolve(_.extend(links[0], {type: 'google_search'}));
+      deferred.resolve(_.extend(links[0], {type: 'google'}));
     } else {
       deferred.resolve({error: 'Everything sucks'});
     }
@@ -77,7 +92,7 @@ function search_freebase(term) {
   freebase.sentence(term, FREEBASE_KEY_OBJ, function(desc) {
     deferred.resolve({
       desc: desc,
-      type: 'freebase_desc',
+      type: 'freebase',
     });
     console.log('Resolved search_freebase');
   });
@@ -90,7 +105,7 @@ function search_freebase_image(term) {
   freebase.image(term, FREEBASE_KEY_OBJ, function(url) {
     deferred.resolve({
       url: url.slice(0, url.indexOf('?')),
-      type: 'freebase_image',
+      type: 'image',
     });
     console.log('Resolved search_freebase_image');
   });
@@ -106,7 +121,7 @@ function search_freebase_definitions(term) {
     } else {
       deferred.resolve({
         defs: _.map(results.slice(1), function(x) { return x.gloss; }),
-        type: 'freebase_wordnet',
+        type: 'defs',
       });
     }
     console.log('Resolved search_freebase_definitions');
@@ -120,7 +135,7 @@ function search_freebase_related(term) {
   freebase.related(term, FREEBASE_KEY_OBJ, function(r) {
     deferred.resolve({
       related: r.map(function(v) { return v.name }),
-      type: 'freebase_related',
+      type: 'related',
     });
     console.log('Resolved search_freebase_related');
   });
@@ -133,7 +148,7 @@ function search_freebase_wiki_link(term) {
   freebase.wikipedia_page(term, FREEBASE_KEY_OBJ, function(url) {
     deferred.resolve({
       url: url,
-      type: 'wikipedia',
+      type: 'wiki',
     });
     console.log('Resolved search_freebase_wiki_link');
   });
@@ -146,7 +161,7 @@ function search_freebase_geo(term) {
   freebase.geolocation(term, FREEBASE_KEY_OBJ, function(latlng) {
     deferred.resolve({
       latlng: latlng,
-      type: 'freebase_geo',
+      type: 'geo',
     });
     console.log('Resolved search_freebase_geo');
   });
