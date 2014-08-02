@@ -1,4 +1,5 @@
-var dispatch = require('../dispatch.js');
+var dispatch = require('../dispatch.js'),
+    filter = require('../filter.js');
 
 exports.index = function(req, res) {
   res.render('index', {
@@ -7,7 +8,10 @@ exports.index = function(req, res) {
 }
 
 exports.query = function(req, res) {
-  dispatch.process(req.query.q).then(function(result) {
+  // TODO remove stopwords
+  var query = filter.run(req.query.q);
+
+  dispatch.process(query).then(function(result) {
     res.send(_.flatten(result));
   });
 }
