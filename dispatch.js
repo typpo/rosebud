@@ -22,6 +22,7 @@ google.resultsPerPage = 1;
 
 /* Takes a phrase and determines the best queries to dispatch. */
 exports.process = function(phrase) {
+  console.log('Processing', phrase);
   return Q.all(ENABLED_SEARCH_ENGINES.map(function(fn) {
     return fn(phrase);
   }));

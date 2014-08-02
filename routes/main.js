@@ -8,12 +8,12 @@ exports.index = function(req, res) {
 }
 
 exports.query = function(req, res) {
-  // TODO remove stopwords
   var query = req.query.q;
   if (!query) {
     res.send({error: 'i dont understnand u'});
     return;
   }
+  console.log(query);
   var requests = JSON.parse(query);
   var filteredRequestString = filter.run(requests);
 

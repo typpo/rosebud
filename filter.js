@@ -1,4 +1,5 @@
-var stopwords = require('stopwords').english;
+var stopwords = require('stopwords').english,
+            _ = require('underscore');
 
 exports.run = function(query) {
   var bestQuery;
@@ -9,8 +10,7 @@ exports.run = function(query) {
   }
 
   bestQuery.transcript = _.filter(bestQuery.transcript.split(' '), function(word) {
-    return !stopwords.indexOf(word) == -1;
+    return stopwords.indexOf(word) == -1;
   });
-  // noop
   return bestQuery.transcript.join(' ');
 }
