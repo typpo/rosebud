@@ -8,6 +8,6 @@ exports.index = function(req, res) {
 
 exports.query = function(req, res) {
   dispatch.process(req.query.q).then(function(result) {
-    res.send(result);
+    res.send(_.flatten(result));
   });
 }
