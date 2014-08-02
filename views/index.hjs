@@ -133,5 +133,5 @@
     <select id="select_dialect"></select>
   </div>
 </div>
-<script src="/public/js/speech.js">
+<script src="/assets/js/speech.js">
 </script>
