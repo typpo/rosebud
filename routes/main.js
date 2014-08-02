@@ -15,9 +15,11 @@ exports.query = function(req, res) {
     return;
   }
   var requests = JSON.parse(query);
-  var bestRequest = filter.run(requests);
+  var filteredRequestString = filter.run(requests);
 
-  dispatch.process(bestRequest).then(function(result) {
-    res.send(_.flatten(result));
+  dispatch.process(filteredRequestString).then(function(result) {
+    res.send(result);
+  }, function() {
+    res.send({error: 'Promise rejected in main.js'});
   });
 }
