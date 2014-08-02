@@ -10,7 +10,7 @@ var Q = require('q');
 exports.process = function(phrase) {
 
   // RIght now just send it to goog.  In the future we might be smarter.
-  // TODO Combine deferreds
+  // TODO Combine deferreds with other search stuff.
   return search_google(phrase);
 }
 
@@ -24,4 +24,16 @@ function search_google(term) {
     }
   });
   return deferred.promise;
+}
+
+function search_wikipedia(term) {
+
+}
+
+function search_drive(term) {
+
+}
+
+function search_gmail(term) {
+
 }
