@@ -1,3 +1,5 @@
+var MIN_CONFIDENCE = 0.8;
+
 var langs =
 [['Afrikaans',       ['af-ZA']],
  ['Bahasa Indonesia',['id-ID']],
@@ -146,11 +148,13 @@ if (!('webkitSpeechRecognition' in window)) {
 
   recognition.onresult = function(event) {
     var interim_transcript = '';
+    maybeSendContextRequest(event);
     for (var i = event.resultIndex; i < event.results.length; ++i) {
+      var transcript = event.results[i][0].transcript;
       if (event.results[i].isFinal) {
-        final_transcript += event.results[i][0].transcript;
+        final_transcript += transcript;
       } else {
-        interim_transcript += event.results[i][0].transcript;
+        interim_transcript += transcript;
       }
     }
     final_transcript = capitalize(final_transcript);
@@ -252,3 +256,70 @@ function showButtons(style) {
   copy_info.style.display = 'none';
   email_info.style.display = 'none';
 }
+
+/**
+ * Talk to the backend with the speech that we have and get results.
+ */
+function getContext(results) {
+  $.ajax({
+    type: 'GET',
+    url: '/search',
+    q: results,
+    dataType: 'json',
+    success: function(data) {
+      console.log(data);
+    }
+  });
+}
+
+/**
+ * Should send functions will return a modified result list.
+ * If it's a value, continue checking other checkers, otherwise we can stop.
+ * These functions can modify the result to remove garbage.
+ */
+function shouldSendConfidence(results) {
+  var resultsMod = [];
+  for (var i in results) {
+    var result = results[i][0];
+    if (result.confidence > MIN_CONFIDENCE) {
+      resultsMod.push(result);
+    }
+  }
+  return resultsMod;
+}
+/**
+ * Determine if we should send a result to the backend.
+ */
+var shouldSendFunctions = [shouldSendConfidence];
+
+function maybeSendContextRequest(event) {
+  // normalize results to 0 based array.
+
+  var results = [];
+  for (var i = event.resultIndex; i < event.results.length; ++i) {
+    results.push(event.results[i]);
+  }
+  for (var i in shouldSendFunctions) {
+    results = shouldSendFunctions[i](results);
+    if (!results || !results.length) return false;
+  }
+  getContext(results);
+  return true;
+}
+
+//startButton({timestamp: 'test'});
+
+var debugEvent = {
+  resultIndex: 0,
+  results: [
+    [{
+      confidence: 0.81,
+      transcript: 'test'
+    }],
+    [{
+      confidence: 0.2,
+      transcript: 'not confident'
+    }]
+  ]};
+
+maybeSendContextRequest(debugEvent);
