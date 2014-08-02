@@ -9,7 +9,12 @@ exports.index = function(req, res) {
 
 exports.query = function(req, res) {
   // TODO remove stopwords
-  var query = filter.run(req.query.q);
+  var query = req.query.q;
+  if (!query) {
+    res.send({error: 'i dont understnand u'});
+    return;
+  }
+  query = filter.run(query);
 
   dispatch.process(query).then(function(result) {
     res.send(_.flatten(result));

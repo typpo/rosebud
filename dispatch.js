@@ -20,8 +20,6 @@ google.resultsPerPage = 1;
 
 /* Takes a phrase and determines the best queries to dispatch. */
 exports.process = function(phrase) {
-  // RIght now just send it to goog.  In the future we might be smarter.
-  // TODO Combine deferreds with other search stuff.
   return Q.all(_.map(ENABLED_SEARCH_ENGINES, function(fn) {
     return fn(phrase);
   }));
@@ -49,71 +47,88 @@ function search_gmail(term) {
 
 }
 
+function search_calendar(term) {
+
+}
+
 function search_freebase(term) {
+  console.log('Dispatching search_freebase');
   var deferred = Q.defer();
   freebase.sentence(term, FREEBASE_KEY_OBJ, function(desc) {
     deferred.resolve({
       desc: desc,
       type: 'freebase_desc',
     });
+    console.log('Resolved search_freebase');
   });
   return deferred.promise;
 }
 
 function search_freebase_image(term) {
+  console.log('Dispatching search_freebase_image');
   var deferred = Q.defer();
   freebase.image(term, FREEBASE_KEY_OBJ, function(url) {
     deferred.resolve({
       url: url.slice(0, url.indexOf('?')),
       type: 'freebase_image',
     });
+    console.log('Resolved search_freebase_image');
   });
   return deferred.promise;
 }
 
 function search_freebase_definitions(term) {
+  console.log('Dispatching search_freebase_definitions');
   var deferred = Q.defer();
   freebase.wordnet(term, FREEBASE_KEY_OBJ, function(results) {
     if (results.length < 1) {
       deferred.reject({});
+    } else {
+      deferred.resolve({
+        defs: _.map(results.slice(1), function(x) { return x.gloss; }),
+        type: 'freebase_wordnet',
+      });
     }
-    deferred.resolve({
-      defs: _.map(results.slice(1), function(x) { return x.gloss; }),
-      type: 'freebase_wordnet',
-    });
+    console.log('Resolved search_freebase_definitions');
   });
   return deferred.promise;
 }
 
 function search_freebase_related(term) {
+  console.log('Dispatching search_freebase_related');
   var deferred = Q.defer();
   freebase.related(term, FREEBASE_KEY_OBJ, function(r) {
     deferred.resolve({
       related: r.map(function(v) { return v.name }),
       type: 'freebase_related',
     });
+    console.log('Resolved search_freebase_related');
   });
   return deferred.promise;
 }
 
 function search_freebase_wiki_link(term) {
+  console.log('Dispatching search_freebase_wiki_link');
   var deferred = Q.defer();
   freebase.wikipedia_page(term, FREEBASE_KEY_OBJ, function(url) {
     deferred.resolve({
       url: url,
       type: 'wikipedia',
     });
+    console.log('Resolved search_freebase_wiki_link');
   });
   return deferred.promise;
 }
 
 function search_freebase_geo(term) {
+  console.log('Dispatching search_freebase_geo');
   var deferred = Q.defer();
   freebase.geolocation(term, FREEBASE_KEY_OBJ, function(latlng) {
     deferred.resolve({
       latlng: latlng,
       type: 'freebase_geo',
     });
+    console.log('Resolved search_freebase_geo');
   });
   return deferred.promise;
 }
