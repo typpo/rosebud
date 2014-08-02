@@ -1,6 +1,8 @@
+'use strict';
+
 var google = require('google'),
     Q = require('q'),
-    freebase = require('freebase')
+    freebase = require('freebase'),
     _ = require('underscore');
 
 /** Constants **/
@@ -20,21 +22,38 @@ google.resultsPerPage = 1;
 
 /* Takes a phrase and determines the best queries to dispatch. */
 exports.process = function(phrase) {
-  return Q.all(_.map(ENABLED_SEARCH_ENGINES, function(fn) {
+  return Q.all(ENABLED_SEARCH_ENGINES.map(function(fn) {
     return fn(phrase);
   }));
+ /*
+  var deferred = Q.defer();
+  var results = [];
+  ENABLED_SEARCH_ENGINES.map(function(fn) {
+    fn(phrase).then(function(result) {
+      results.push(result);
+      console.log(results.length, '/', ENABLED_SEARCH_ENGINES.length);
+      if (results.length == ENABLED_SEARCH_ENGINES.length) {
+        console.log('resolving');
+        deferred.resolve(results);
+      }
+    });
+  });
+  return deferred.promise;
+  */
 }
 
 /** Private fns **/
 
 function search_google(term) {
+  console.log('Dispatching google_search');
   var deferred = Q.defer();
   google(term, function(err, next, links) {
     if (!err && links.length > 0) {
       deferred.resolve(_.extend(links[0], {type: 'google_search'}));
     } else {
-      deferred.reject({error: 'Everything sucks'});
+      deferred.resolve({error: 'Everything sucks'});
     }
+    console.log('Resolved google_search');
   });
   return deferred.promise;
 }
@@ -82,7 +101,7 @@ function search_freebase_definitions(term) {
   var deferred = Q.defer();
   freebase.wordnet(term, FREEBASE_KEY_OBJ, function(results) {
     if (results.length < 1) {
-      deferred.reject({});
+      deferred.resolve({});
     } else {
       deferred.resolve({
         defs: _.map(results.slice(1), function(x) { return x.gloss; }),

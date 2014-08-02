@@ -17,6 +17,8 @@ exports.query = function(req, res) {
   query = filter.run(query);
 
   dispatch.process(query).then(function(result) {
-    res.send(_.flatten(result));
+    res.send(result);
+  }, function() {
+    res.send({error: 'Promise rejected in main.js'});
   });
 }
