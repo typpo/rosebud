@@ -17,6 +17,7 @@ var ENABLED_SEARCH_ENGINES = {
                           'wiki': search_freebase_wiki_link,
                           'geo': search_freebase_geo,
 };
+
 /** Library setup **/
 google.resultsPerPage = 1;
 
@@ -50,21 +51,6 @@ exports.process = function(phrase) {
     deferred.resolve(final_results);
   });
   return deferred.promise;
- /*
-  var deferred = Q.defer();
-  var results = [];
-  _.each(ENABLED_SEARCH_ENGINES, function(fn, key) {
-    var add = function(result) {
-      console.log("FUCK");
-      results.push(result);
-      if (results.length == ENABLED_SEARCH_ENGINES.length) {
-        deferred.resolve({key: results});
-      }
-    }
-    fn(phrase).then(add, add);
-  });
-  return deferred.promise;
- */
 }
 
 /** Private fns **/
