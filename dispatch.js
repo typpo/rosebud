@@ -12,7 +12,8 @@ var ENABLED_SEARCH_ENGINES = {
                           'freebase': search_freebase,
                           'image': search_freebase_image,
                           'defs': search_freebase_definitions,
-                          'related': search_freebase_related,
+                          // Related is slow and not very useful.
+                          //'related': search_freebase_related,
                           'wiki': search_freebase_wiki_link,
                           'geo': search_freebase_geo,
 };
@@ -27,18 +28,26 @@ exports.process = function(phrase) {
   var deferred = Q.defer();
   var searchers = _.map(ENABLED_SEARCH_ENGINES, function(fn, key) {
     console.log('running for', key);
-    return fn(phrase);
+    var deferred = Q.defer();
+    var promise = fn(phrase);
+    Q.when(promise, deferred.resolve);
+    setTimeout(function() {
+      //deferred.reject(new Error('Timed out'));
+      deferred.resolve({type: key, error: 'timed out'});
+    }, 3000);
+    return deferred.promise;
   });
   Q.allSettled(searchers).then(function(results) {
+    console.log('All settled');
     var final_results = [];
-    results.map(function(result) {
+    _.map(results, function(result) {
       var val = result.value;
       var str =  val.type;
       var d = {};
       d[str] = val;
       final_results.push(d);
     });
-    deferred.resolve(results);
+    deferred.resolve(final_results);
   });
   return deferred.promise;
  /*
