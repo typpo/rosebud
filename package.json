@@ -12,6 +12,7 @@
     "less-middleware": "*",
     "googleapis": "latest",
     "google": "latest",
-    "q": "latest"
+    "q": "latest",
+    "freebase": "latest"
   }
 }
