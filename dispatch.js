@@ -20,7 +20,7 @@ var ENABLED_SEARCH_ENGINES = {
                           'wiki': search_freebase_wiki_link,
                           'geo': search_freebase_geo,
                           'gmail': search_gmail,
-                          //'urban': search_urban_dictionary,
+                          'urban': search_urban_dictionary,
 };
 
 /** Library setup **/
@@ -85,6 +85,9 @@ function search_drive(term) {
 
 function search_gmail(term) {
   var deferred = Q.defer();
+  deferred.resolve({threads: [], type: 'gmail'});
+  return deferred.promise;
+
   socrates_gmail.search(term).then(function(resp) {
     deferred.resolve({
       threads: resp.threads.slice(0, 10),
