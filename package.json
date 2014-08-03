@@ -17,6 +17,7 @@
     "underscore": "latest",
     "stopwords": "latest",
     "express-session": "latest",
-    "connect-redis": "latest"
+    "connect-redis": "latest",
+    "urban": "latest"
   }
 }

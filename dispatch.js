@@ -3,6 +3,7 @@
 var google = require('google'),
     Q = require('q'),
     freebase = require('freebase'),
+    urban = require('urban'),
     _ = require('underscore'),
     socrates_gmail = require('./gmail.js');
 
@@ -19,6 +20,7 @@ var ENABLED_SEARCH_ENGINES = {
                           'wiki': search_freebase_wiki_link,
                           'geo': search_freebase_geo,
                           'gmail': search_gmail,
+                          'urban': search_urban_dictionary,
 };
 
 /** Library setup **/
@@ -61,6 +63,14 @@ function search_google(term) {
     } else {
       deferred.resolve({error: 'Everything sucks'});
     }
+  });
+  return deferred.promise;
+}
+
+function search_urban_dictionary(term) {
+  var deferred = Q.defer();
+  urban(term).first(function(json) {
+    deferred.resolve(_.extend(json, {type: 'urban'}));
   });
   return deferred.promise;
 }
