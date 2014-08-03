@@ -35,6 +35,7 @@ exports.search = function(q) {
 }
 
 function postprocess(resp) {
+  if (!resp.threads) return {threads: []};
   for (var i=0; i < resp.threads.length; i++) {
     resp.threads[i].url = 'https://mail.google.com/mail/u/0/#inbox/' + resp.threads[i].id;
   }

@@ -36,13 +36,17 @@ exports.process = function(phrase) {
     var deferred = Q.defer();
     var promise = fn(phrase);
     Q.when(promise, deferred.resolve);
-    setTimeout(function() {
+    //delay(SEARCH_TIMEOUT).then(function() {
+    /*
+    promise.timeout(SEARCH_TIMEOUT).then(function() {
       console.warn(key, 'timed out');
       deferred.resolve({type: key, error: 'timed out @ ' + SEARCH_TIMEOUT});
-    }, SEARCH_TIMEOUT);
+    });
+    */
     return deferred.promise;
   });
   Q.allSettled(searchers).then(function(results) {
+    console.log('All done with', phrase);
     var final_result = {};
     _.map(results, function(result) {
       var val = result.value;
@@ -162,5 +166,11 @@ function search_freebase_geo(term) {
       type: 'geo',
     });
   });
+  return deferred.promise;
+}
+
+function delay(ms) {
+  var deferred = Q.defer();
+  setTimeout(deferred.resolve, ms);
   return deferred.promise;
 }
