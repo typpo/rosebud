@@ -418,6 +418,7 @@ $(function() {
     var $right_column = $('#right_column_content');
     var html = addResultsTemplates(resultsCache[term], term, true);
     $right_column.html(html);
+    $right_column.find('.result:first').remove().appendTo($right_column);
     $('.selected').removeClass('selected');
     $('#result_' + toId(term)).addClass('selected');
   }
