@@ -11,7 +11,7 @@ var auth = require('./auth.js')
 
 exports.search = function(q) {
   var deferred = Q.defer();
-  if (os.hostname() === 'rosebud') {
+  if (os.hostname() !== 'rosebud') {
     deferred.resolve(postprocess(require('./dummy_drive.json')));
     return deferred.promise;
   }
