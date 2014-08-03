@@ -237,7 +237,7 @@ $(function() {
     results: [
       [{
         confidence: 0.81,
-        transcript: 'banana'
+        transcript: 'banana pie'
       }],
       [{
         confidence: 0.2,
@@ -361,11 +361,14 @@ $(function() {
       if (html) {
         data = {
           html: html,
-          term: ''
+          term: '',
+          id: ''
         };
         if (!show_all) {
-          data.term = toId(term);
+          data.term = term;
+          data.id = toId(term);
         }
+        console.log(data);
         html = tmpl('generic_result', data);
         if (!show_all) return html;
         templates.push(html);
