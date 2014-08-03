@@ -35,7 +35,6 @@ exports.query = function(req, res) {
 
   // Run transforms
   triggers.trigger_transform_on_queries(queries);
-  console.log('here we are', queries);
 
   // Then filter
   filter.run(queries).then(function(filteredRequestString) {
