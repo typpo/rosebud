@@ -61,7 +61,7 @@ function search_google(term) {
     if (!err && links.length > 0) {
       deferred.resolve(_.extend(links[0], {type: 'google'}));
     } else {
-      deferred.resolve({error: 'Everything sucks'});
+      deferred.resolve({type: 'google', error: 'Everything sucks'});
     }
   });
   return deferred.promise;
