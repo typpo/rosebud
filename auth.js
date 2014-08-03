@@ -11,7 +11,16 @@ var GOOGLE_CALLBACK_URL = "http://www.bunkmates.co/auth/google/callback";
 
 var OAuth2Client = googleapis.auth.OAuth2;
 
-var oauth2Client = new OAuth2Client(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL);
+var clients = {};
+
+function createOrGetClientForSession(sess) {
+  if (!sess.uid || !clients[sess.uid]) {
+    sess.uid = Math.random().toString(36) + new Date();
+    clients[sess.uid] =
+      new OAuth2Client(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL);
+  }
+  return clients[sess.uid];
+}
 
 exports.GOOGLE_CLIENT_ID = GOOGLE_CLIENT_ID;
 exports.GOOGLE_CLIENT_SECRET = GOOGLE_CLIENT_SECRET;
@@ -19,7 +28,7 @@ exports.GOOGLE_CALLBACK_URL = GOOGLE_CALLBACK_URL;
 
 exports.login = function(req, res) {
   // generate consent page url
-  var url = oauth2Client.generateAuthUrl({
+  var url = createOrGetClientForSession(req.session).generateAuthUrl({
     access_type: 'offline', // will return a refresh token
     scope: ['https://www.googleapis.com/auth/userinfo.profile',
             'https://www.googleapis.com/auth/userinfo.email',
@@ -28,24 +37,24 @@ exports.login = function(req, res) {
             'https://www.googleapis.com/auth/drive.metadata.readonly',
             ],
   });
-
   res.redirect(url);
 }
 
 exports.google_callback = function(req, res) {
   var code = req.query.code;
-  oauth2Client.getToken(code, function(err, tokens) {
+  var client = createOrGetClientForSession(req.session);
+  client.getToken(code, function(err, tokens) {
     // set tokens to the client
     // TODO: tokens should be set by OAuth2 client.
-    oauth2Client.setCredentials(tokens);
+    client.setCredentials(tokens);
     req.session.tokens = tokens;
     //callback();
     res.redirect('/');
   });
 }
 
-exports.get_client = function() {
-  return oauth2Client;
+exports.get_client = function(req) {
+  return createOrGetClientForSession(req.session);
 }
 
 exports.has_saved_tokens = function(req) {
@@ -56,5 +65,5 @@ exports.has_saved_tokens = function(req) {
 }
 
 exports.set_saved_tokens = function(req) {
-  oauth2Client.setCredentials(req.session.tokens);
+  createOrGetClientForSession(req.session).setCredentials(req.session.tokens);
 }

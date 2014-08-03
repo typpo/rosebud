@@ -1,6 +1,7 @@
 var express = require('express')
   , main = require('./routes/main.js')
   , http = require('http')
+  , process = require('process')
   , fs = require('fs')
   , path = require('path')
   , session = require('express-session')
@@ -47,6 +48,11 @@ app.get('/test', main.test);
 app.get('/auth/google/callback', auth.google_callback);
 app.get('/auth/login', auth.login);
 app.get('/login', auth.login);
+
+// Process stuff
+process.on('uncaughtException', function (error) {
+ console.error(error.stack);
+});
 
 // Https
 var https = require('https');

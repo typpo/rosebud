@@ -13,7 +13,7 @@ var auth = require('./auth.js')
   //gmail.users.threads.list
   //https://github.com/google/google-api-nodejs-client/blob/master/apis/gmail/v1.js#L837
 
-exports.search = function(q) {
+exports.search = function(q, req) {
   var deferred = Q.defer();
   if (os.hostname() !== 'rosebud') {
     deferred.resolve(postprocess(require('./dummy_gmail.json')));
@@ -24,7 +24,7 @@ exports.search = function(q) {
     userId: 'me',
     q: q,
     maxResults: 10,
-    auth: auth.get_client(),
+    auth: auth.get_client(req),
   }, function(err, resp) {
     if (err) {
      deferred.resolve({error: 'errorrrr', val: err});
