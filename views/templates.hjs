@@ -5,7 +5,7 @@
 </script>
 
 <script type="text/html" id="google_result">
-  <div class="title"><a href="<%=data.href%> target="_blank"><%=data.title%></a></div>
+  <div class="title"><a href="<%=data.href%>" target="_blank"><%=data.title%></a></div>
   <div class="clear"><%=data.description%></div>
   <div class="clear attribution">provided by <%=data.type%></div>
 </script>
@@ -37,7 +37,7 @@
 </script>
 
 <script type="text/html" id="urban_result">
- <div class="title"><a href="<%=data.permalink%> target="_blank"><%=data.word%></a></div>
+ <div class="title"><a href="<%=data.permalink%>" target="_blank"><%=data.word%></a></div>
   <div class="clear"><%=data.definition%></div>
   <div class="clear attribution">provided by <%=data.type%></div>
 </script>

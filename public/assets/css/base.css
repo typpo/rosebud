@@ -13,10 +13,10 @@ h1 {
     text-decoration: none;
   }
   a:visited {
-    color:#000;
+    color:#663333;
   }
   a:hover {
-    color:#33F;
+    color:#007BFF;
   }
   .button {
     background: -webkit-linear-gradient(top,#008dfd 0,#0370ea 100%);
@@ -83,9 +83,17 @@ h1 {
    color:#666;
  }
  .title {
-   font-size:20px;
-   font-weight: 600;
+   font-size:18px;
+   font-weight: 300;
  }
+
+ .brand {
+   font-size:32px;
+   font-weight: 300;
+   color: #007BFF;
+   margin-right: 10px;
+ }
+
  .img_base {
    padding: 5px;
    border: 1px solid #CACACA;
@@ -106,12 +114,6 @@ h1 {
  #header{
    margin-top: 16px;
    margin-left: 10px;
- }
-
- .title {
-   font-size: 32px;
-   font-weight: 300;
-   color: #007BFF;
  }
 
  /* CSS for the content of page. I am giving top and bottom padding of 60px to make sure the header and footer do not overlap the content.*/
@@ -141,5 +143,7 @@ h1 {
  #right_column {
    width: 44%;
    float: right;
+   box-sizing: border-box;
+   padding: 10px;
  }
 
