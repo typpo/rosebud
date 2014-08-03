@@ -201,3 +201,8 @@ h1 {
   background-color: #FFF;
   margin-right: 5px;
 }
+
+#right_column_content {
+  height: 700px;
+  overflow: auto;
+}

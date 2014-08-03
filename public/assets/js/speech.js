@@ -415,7 +415,7 @@ $(function() {
 
   // Callback for a generic result click.
   window.showRightPanel = function(term) {
-    var $right_column = $('#right_column');
+    var $right_column = $('#right_column_content');
     var html = addResultsTemplates(resultsCache[term], term, true);
     $right_column.html(html);
     $('.selected').removeClass('selected');
