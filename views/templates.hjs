@@ -1,0 +1,3 @@
+<script type="text/html" id="generic_result">
+  <div><%=text%></div>
+</script>
