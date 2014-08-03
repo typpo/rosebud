@@ -152,6 +152,7 @@ $(function() {
       return;
     }
     last_send = Date.now();
+    if (context_timeout) clearTimeout(context_timeout);
     /*
     recognition.stop();
     init();
@@ -169,7 +170,7 @@ $(function() {
         html = addResultsTemplates(data, data.query);
         result_div.prepend(html);
         setTimeout(function() {
-          var added = $('#result_' + data.query);
+          var added = $('#result_' + toId(data.query));
           var content = added.children('.content_inner')[0];
           var img = $(content).children('.img_base')[0];
           var height = content.clientHeight;
@@ -317,6 +318,7 @@ $(function() {
   function renderFreebase(results, term, isrhs) {
     var data = results['freebase'];
     if (!data.desc || !data.desc.length) return;
+    data['isrhs'] = !!isrhs;
     data['geo'] = getBaseHtml('geo', results);
     data['image'] = getBaseHtml('image', results);
     return render('freebase', data);
@@ -327,6 +329,7 @@ $(function() {
 
   function renderUrban(results, term, isrhs) {
     if (!results.urban || !results.urban.definition) return;
+    results['urban']['isrhs'] = !!isrhs;
     return getBaseHtml('urban', results);
   }
 
@@ -335,6 +338,7 @@ $(function() {
     if (!isrhs) {
       data['image'] = getBaseHtml('image', results);
     }
+    data['isrhs'] = !!isrhs;
     return render('google', data);
   }
 
@@ -342,6 +346,7 @@ $(function() {
   function renderGmail(results, term, isrhs) {
     if (term != 'banana') return;
     if (!results.gmail || !results.gmail.threads || !results.gmail.threads.length) return;
+    results['gmail']['isrhs'] = !!isrhs;
     return getBaseHtml('gmail', results);
   }
 
@@ -360,10 +365,12 @@ $(function() {
       if (html) {
         data = {
           html: html,
-          term: ''
+          term: '',
+          id: ''
         };
         if (!show_all) {
           data.term = term;
+          data.id = toId(term);
         }
         html = tmpl('generic_result', data);
         if (!show_all) return html;
@@ -392,5 +399,9 @@ $(function() {
     $right_column.html(html);
     $('.selected').removeClass('selected');
     $('#result_' + term).addClass('selected');
+  }
+
+  function toId(term) {
+    return term.replace(/ /g, '-');
   }
 });

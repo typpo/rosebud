@@ -1,5 +1,5 @@
 <script type="text/html" id="generic_result">
-  <div class="result" <% if(term) { %> style="max-height: 0px;" id="result_<%=term%>" onclick="showRightPanel('<%=term%>')" <% } %>>
+  <div class="result" <% if(term) { %> style="max-height: 0px;" id="result_<%=id%>" onclick="showRightPanel('<%=term%>')" <% } %>>
     <div class="content_inner">
       <% if(term) { %>
         <%=term%>
@@ -13,13 +13,17 @@
 <%=data.image%>
   <div class="title"><a href="<%=data.href%>" target="_blank"><%=data.title%></a></div>
   <div class="clear"><%=data.description%></div>
+  <% if(data.isrhs) { %>
   <div class="clear attribution">provided by google</div>
+  <% } %>
 </script>
 
 <script type="text/html" id="freebase_result">
   <%=data.image%>
   <div class="clear"><%=data.desc%></div>
+  <% if(data.isrhs) { %>
   <div class="clear attribution">provided by google</div>
+  <% } %>
 </script>
 
 <script type="text/html" id="undefined_result">
@@ -36,18 +40,24 @@
 
 <script type="text/html" id="defs_result">
   <div class="clear"><%=data.desc%></div>
+  <% if(data.isrhs) { %>
   <div class="clear attribution">provided by wordnet</div>
+  <% } %>
 </script>
 
 <script type="text/html" id="wiki_result">
   <div class="clear"><%=data.desc%></div>
+  <% if(data.isrhs) { %>
   <div class="clear attribution">provided by wikipedia</div>
+  <% } %>
 </script>
 
 <script type="text/html" id="urban_result">
  <div class="title"><a href="<%=data.permalink%>" target="_blank"><%=data.word%></a></div>
   <div class="clear"><%=data.definition%></div>
+  <% if(data.isrhs) { %>
   <div class="clear attribution">provided by urbandictionary</div>
+  <% } %>
 </script>
 
 <script type="text/html" id="gmail_result">
@@ -55,5 +65,7 @@
 <% for ( var i = 0; i < data.threads.length; i++ ) { %>
   <div class="result_gmail">"<a href="<%=data.threads[i].url%>"><%=data.threads[i].snippet%></a>"</div>
   <% } %>
-  <div class="clear attribution">provided by <%=data.type%></div>
+  <% if(data.isrhs) { %>
+  <div class="clear attribution">provided by gmail</div>
+  <% } %>
  </script>
