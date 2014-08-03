@@ -36,14 +36,14 @@ exports.google_callback = function(req, res) {
     // set tokens to the client
     // TODO: tokens should be set by OAuth2 client.
     oauth2Client.setCredentials(tokens);
-    req.session.token = tokens;
+    req.session.tokens = tokens;
     //callback();
     res.redirect('/');
   });
 }
 
 exports.get_client = function() {
-  return oAuth2Client;
+  return oauth2Client;
 }
 
 exports.has_saved_tokens = function(req) {
@@ -51,5 +51,5 @@ exports.has_saved_tokens = function(req) {
 }
 
 exports.set_saved_tokens = function(req) {
-  oAuth2Client.setCredentials(req.session.tokens);
+  oauth2Client.setCredentials(req.session.tokens);
 }

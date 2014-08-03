@@ -3,7 +3,8 @@
 var google = require('google'),
     Q = require('q'),
     freebase = require('freebase'),
-    _ = require('underscore');
+    _ = require('underscore'),
+    socrates_gmail = require('./gmail.js');
 
 /** Constants **/
 var FREEBASE_KEY_OBJ = {key: 'AIzaSyCvQC_qRXBQDkrP_0dLLKZ3mDU1stM5VEM'};
@@ -16,6 +17,7 @@ var ENABLED_SEARCH_ENGINES = {
                           //'related': search_freebase_related,
                           'wiki': search_freebase_wiki_link,
                           'geo': search_freebase_geo,
+                          'gmail': search_gmail,
 };
 
 /** Library setup **/
@@ -71,7 +73,13 @@ function search_drive(term) {
 }
 
 function search_gmail(term) {
-
+  var deferred = Q.defer();
+  socrates_gmail.search(term).then(function(resp) {
+    deferred.resolve({
+      threads: resp.threads.slice(0, 10)
+    });
+  });
+  return deferred.promise;
 }
 
 function search_calendar(term) {

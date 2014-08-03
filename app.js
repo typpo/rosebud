@@ -17,23 +17,23 @@ app.configure(function(){
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
   app.use(express.methodOverride());
-  app.use(app.router);
   //app.use(require('less-middleware')(path.join(__dirname + '/public' )));
   app.use(express.static(path.join(__dirname, 'public')));
   app.use(express.cookieParser());
+  /*
   app.use(session({
     secret: 'roger wong',
     resave: true,
     saveUninitialized: true,
     store: new RedisStore(),
-/*
-    cookie: {
-      path    : '/',
-      httpOnly: false,
-      maxAge  : 24*60*60*1000
-    },
-*/
   }));
+ */
+  app.use(express.session({
+    secret: 'boners',
+    store: new RedisStore,
+    key: 'socrates.sess',
+  }));
+  app.use(app.router);
 });
 
 app.configure('development', function(){
@@ -41,13 +41,12 @@ app.configure('development', function(){
 });
 
 app.get('/', main.index);
-
-app.get('/test', main.test);
-
 app.get('/search', main.query);
+app.get('/test', main.test);
 
 app.get('/auth/google/callback', auth.google_callback);
 app.get('/auth/login', auth.login);
+app.get('/login', auth.login);
 
 // Https
 var https = require('https');
