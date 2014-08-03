@@ -373,8 +373,8 @@ $(function() {
 
   var renderingFunctions = [
     renderDrive,
-    renderGmail,
     renderFreebase,
+    renderGmail,
     renderUrban,
     renderGoogle
   ];
