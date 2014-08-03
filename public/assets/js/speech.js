@@ -122,6 +122,8 @@ $(function() {
     current_style = style;
   }
 
+  // Map from search query to response.
+  var resultsCache = {};
   /**
    * Talk to the backend with the speech that we have and get results.
    */
@@ -131,8 +133,14 @@ $(function() {
       url: '/search?q=' + JSON.stringify(results),
       dataType: 'json',
       success: function(data) {
+        resultsCache[data.query] = data;
         console.log(data);
-        addResultsTemplates(data);
+        var result_div = $('#results');
+        html = addResultsTemplates(data, data.query);
+        result_div.prepend(tmpl('generic_result', {
+          html: html,
+          term: data.query
+        }));
       }
     });
   }
@@ -145,8 +153,19 @@ $(function() {
   function shouldSendConfidence(results) {
     var resultsMod = [];
     for (var i in results) {
-      var result = results[i][0];
+      var result = results[i];
       if (result.confidence > MIN_CONFIDENCE) {
+        resultsMod.push(result);
+      }
+    }
+    return resultsMod;
+  }
+
+  function shouldSendRepeats(results) {
+    var resultsMod = [];
+    for (var i in results) {
+      var result = results[i];
+      if (!(result.transcript in resultsCache)) {
         resultsMod.push(result);
       }
     }
@@ -155,14 +174,14 @@ $(function() {
   /**
    * Determine if we should send a result to the backend.
    */
-  var shouldSendFunctions = [shouldSendConfidence];
+  var shouldSendFunctions = [shouldSendConfidence, shouldSendRepeats];
 
   function maybeSendContextRequest(event) {
     // normalize results to 0 based array.
 
     var results = [];
     for (var i = event.resultIndex; i < event.results.length; ++i) {
-      results.push(event.results[i]);
+      results.push(event.results[i][0]);
     }
     for (var i in shouldSendFunctions) {
       results = shouldSendFunctions[i](results);
@@ -266,7 +285,7 @@ $(function() {
   // TODO remove hack for banana
   function renderGmail(results, term) {
     if (term != 'banana') return;
-    return render('gmail', data);
+    return getBaseHtml('gmail', results);
   }
 
   var renderingFunctions = [
@@ -276,22 +295,21 @@ $(function() {
     renderUrban,
     renderGoogle
   ];
-  function addResultsTemplates(results) {
-    var result_div = $('#results');
+  // TODO remove term
+  function addResultsTemplates(results, term, show_all) {
     templates = [];
     for (var i in renderingFunctions) {
-      var html = renderingFunctions[i](results.result);
+      var html = renderingFunctions[i](results.result, term);
       if (html) {
-        result_div.prepend(tmpl('generic_result', {
-          html: html,
-          term: results.query
-        }));
-        return;
+        if (!show_all) return html;
+        templates.push(html);
       }
     }
+    return templates.join('');
   }
 
   function render(type, data) {
+    if (!$('#' + type + '_result').length) return;
     return tmpl(type + '_result', {
       data: data,
       type: type
@@ -300,5 +318,12 @@ $(function() {
 
   function getBaseHtml(type, results) {
     return render(type, results[type]);
+  }
+
+  // Callback for a generic result click.
+  window.showRightPanel = function(term) {
+    var $right_column = $('#right_column');
+    var html = addResultsTemplates(resultsCache[term], term, true);
+    $right_column.html(html);
   }
 });

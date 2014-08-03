@@ -133,3 +133,8 @@ body {
  .result {
  }
 
+ #right_column {
+   width: 44%;
+   float: right;
+ }
+
