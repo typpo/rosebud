@@ -30,18 +30,19 @@ exports.query = function(req, res) {
     auth.set_saved_tokens(req);
   }
   var requests = JSON.parse(query);
-  var filteredRequestString = filter.run(requests);
+  filter.run(requests).then(function(filteredRequestString) {
 
-  dispatch.process(filteredRequestString).then(function(result) {
-    for (var key in result) {
-      if (!key || key === 'undefined') {
-        // I don't know why this happens
-        delete result[key];
+    dispatch.process(filteredRequestString).then(function(result) {
+      for (var key in result) {
+        if (!key || key === 'undefined') {
+          // I don't know why this happens
+          delete result[key];
+        }
       }
-    }
-    res.send({query: filteredRequestString, result: result});
-  }, function() {
-    res.send({error: 'Promise rejected in main.js'});
+      res.send({query: filteredRequestString, result: result});
+    }, function() {
+      res.send({error: 'Promise rejected in main.js'});
+    });
   });
 }
 

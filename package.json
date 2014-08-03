@@ -16,6 +16,7 @@
     "freebase": "latest",
     "underscore": "latest",
     "stopwords": "latest",
+    "wordpos": "latest",
     "express-session": "latest",
     "connect-redis": "latest",
     "urban": "latest"
