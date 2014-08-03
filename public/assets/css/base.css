@@ -75,6 +75,10 @@ body {
     background-color:transparent;
     padding: 0;
   }
+
+  #start_img {
+    width: 25px;
+  }
  .clear {
  	clear: both;
  }

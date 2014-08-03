@@ -7,7 +7,7 @@
 </style>
 <div class="header">
   <h1>Socratez</h1>
-  <button id="start_button" onclick="startButton(event)">
+  <button id="start_button">
     <img id="start_img" src="/assets/images/mic.gif" alt="Start"></button>
 </div>
 <div id="results">
