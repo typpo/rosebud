@@ -20,7 +20,6 @@ exports.run = function(query) {
   }
 
   var originalTranscript = bestQuery.transcript;
-  console.log('run');
   var words = _.filter(bestQuery.transcript.split(' '), function(word) {
     console.log(word);
     if (!common_words[word]) console.log(word);
