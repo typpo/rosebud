@@ -1,13 +1,14 @@
 var express = require('express')
   , passport = require('passport')
   , util = require('util')
-  , GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
-  , gmail = google.gmail('v1');
+  , GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
+  , googleapis = require('googleapis')
+  , gmail = googleapis.gmail('v1');
 
 // API Access link for creating client ID and secret:
 // https://code.google.com/apis/console/
-var GOOGLE_CLIENT_ID = "--insert-google-client-id-here--";
-var GOOGLE_CLIENT_SECRET = "--insert-google-client-secret-here--";
+var GOOGLE_CLIENT_ID = "503018576817-cbfc6b5bvl4rc8b1i5rifhhmhbo9qg0t.apps.googleusercontent.com";
+var GOOGLE_CLIENT_SECRET = "sCecpU9icHLTovVXqiwsWvSw";
 
 
 // Passport session setup.
@@ -33,18 +34,73 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://127.0.0.1:3000/auth/google/callback"
+    callbackURL: "http://www.bunkmates.co/auth/google/callback"
   },
   function(accessToken, refreshToken, profile, done) {
-    // asynchronous verification, for effect...
-    process.nextTick(function () {
-
-      // To keep the example simple, the user's Google profile is returned to
-      // represent the logged-in user.  In a typical application, you would want
-      // to associate the Google account with a user record in your database,
-      // and return that user instead.
-      return done(null, profile);
-    });
+    // To keep the example simple, the user's Google profile is returned to
+    // represent the logged-in user.  In a typical application, you would want
+    // to associate the Google account with a user record in your database,
+    // and return that user instead.
+    return done(null, profile);
   }
 ));
 
+exports.setup = function(app) {
+  app.use(passport.initialize());
+  app.use(passport.session());
+
+  app.get('/account', ensureAuthenticated, function(req, res){
+    res.render('account', { user: req.user });
+  });
+
+  app.get('/login', function(req, res){
+    res.render('login', { user: req.user });
+  });
+
+  // GET /auth/google
+  //   Use passport.authenticate() as route middleware to authenticate the
+  //   request.  The first step in Google authentication will involve
+  //   redirecting the user to google.com.  After authorization, Google
+  //   will redirect the user back to this application at /auth/google/callback
+  app.get('/auth/google',
+    passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/userinfo.profile',
+                                              'https://www.googleapis.com/auth/userinfo.email',
+                                              'https://www.googleapis.com/auth/gmail.readonly',
+                                              ] }),
+    function(req, res){
+      // The request will be redirected to Google for authentication, so this
+      // function will not be called.
+    });
+
+  // GET /auth/google/callback
+  //   Use passport.authenticate() as route middleware to authenticate the
+  //   request.  If authentication fails, the user will be redirected back to the
+  //   login page.  Otherwise, the primary route function function will be called,
+  //   which, in this example, will redirect the user to the home page.
+  app.get('/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    function(req, res) {
+      res.redirect('/');
+    });
+
+  app.get('/logout', function(req, res){
+    req.logout();
+    res.redirect('/');
+  });
+}
+
+//gmail.users.messages.get
+//https://github.com/google/google-api-nodejs-client/blob/master/apis/gmail/v1.js#L490
+
+//gmail.users.threads.list
+//https://github.com/google/google-api-nodejs-client/blob/master/apis/gmail/v1.js#L837
+
+// Simple route middleware to ensure user is authenticated.
+//   Use this route middleware on any resource that needs to be protected.  If
+//   the request is authenticated (typically via a persistent login session),
+//   the request will proceed.  Otherwise, the user will be redirected to the
+//   login page.
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) { return next(); }
+  res.redirect('/login');
+}
