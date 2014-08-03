@@ -120,7 +120,7 @@ body {
  }
 
  #results {
-   overflow: scroll;
+   overflow: auto;
    height: 500px;
    padding-left: 20px;
    border-top: 1px solid #ddd;
