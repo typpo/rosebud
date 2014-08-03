@@ -115,7 +115,7 @@ exports.Dispatch = function Dispatch(phrase, req) {
 
     socrates_gmail.search(term, req).then(function(resp) {
       deferred.resolve({
-        threads: resp.threads.slice(0, 10),
+        threads: resp.threads.slice(0, 5),
         type: 'gmail',
       });
     });
