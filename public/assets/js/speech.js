@@ -141,8 +141,9 @@ $(function() {
     var result_div = $('#results');
     templates = [];
     for (var type in results) {
+      // Don't try it with stupid non-existant templates
       if (!$('#' + type + '_result').length) continue;
-      var temp = tmpl(type + '_result', {
+      var temp = tmpl('generic_result', {
         type: type,
         data: results[type]
       });
