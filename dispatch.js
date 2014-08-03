@@ -7,166 +7,182 @@ var google = require('google'),
     _ = require('underscore'),
     socrates_gmail = require('./gmail.js');
 
-/** Constants **/
-var SEARCH_TIMEOUT = 3*1000;
-var FREEBASE_KEY_OBJ = {key: 'AIzaSyCvQC_qRXBQDkrP_0dLLKZ3mDU1stM5VEM'};
-var ENABLED_SEARCH_ENGINES = {
-                          'google': search_google,
-                          'freebase': search_freebase,
-                          'image': search_freebase_image,
-                          'defs': search_freebase_definitions,
-                          // Related is slow and not very useful.
-                          //'related': search_freebase_related,
-                          'wiki': search_freebase_wiki_link,
-                          'geo': search_freebase_geo,
-                          'gmail': search_gmail,
-                          'urban': search_urban_dictionary,
-};
-
 /** Library setup **/
 google.resultsPerPage = 1;
 
-/** Public fns **/
+exports.Dispatch = function Dispatch(phrase) {
+  /** Constants **/
+  var SEARCH_TIMEOUT = 3*1000;
+  var FREEBASE_KEY_OBJ = {key: 'AIzaSyCvQC_qRXBQDkrP_0dLLKZ3mDU1stM5VEM'};
+  var ENABLED_SEARCH_ENGINES = {
+                            'google': search_google,
+                            'freebase': search_freebase,
+                            'image': search_freebase_image,
+                            'defs': search_freebase_definitions,
+                            // Related is slow and not very useful.
+                            //'related': search_freebase_related,
+                            'wiki': search_freebase_wiki_link,
+                            'geo': search_freebase_geo,
+                            'gmail': search_gmail,
+                            'urban': search_urban_dictionary,
+  };
 
-/* Takes a phrase and determines the best queries to dispatch. */
-exports.process = function(phrase) {
-  console.log('Processing', phrase);
-  var deferred = Q.defer();
-  var searchers = _.map(ENABLED_SEARCH_ENGINES, function(fn, key) {
+  var done_log = {};
+
+  /** Public fns **/
+
+  /* Takes a phrase and determines the best queries to dispatch. */
+  Dispatch.prototype.process = function() {
+    console.log('Processing', phrase);
+
+    var searchers = _.map(ENABLED_SEARCH_ENGINES, function(fn, key) {
+      var deferred2 = Q.defer();
+      var promise = fn(phrase);
+      Q.when(promise, deferred2.resolve);
+      setTimeout(function() {
+        deferred2.resolve({type: key, error: 'timed out @ ' + SEARCH_TIMEOUT});
+      }, SEARCH_TIMEOUT);
+      done_log[key] = false;
+      promise.then(function() {
+        done_log[key] = true;
+        //console.log(done_log);
+      });
+      return deferred2.promise;
+    });
+
     var deferred = Q.defer();
-    var promise = fn(phrase);
-    Q.when(promise, deferred.resolve);
-    promise.timeout(SEARCH_TIMEOUT).then(function() {
-      deferred.resolve({type: key, error: 'timed out @ ' + SEARCH_TIMEOUT});
+    Q.all(searchers).then(function(results) {
+      console.log('All done with', phrase);
+      var final_result = {};
+      console.log(results);
+      results.map(function(result) {
+        //var val = result.value;
+        var val = result;
+        final_result[val.type] = val;
+      });
+      deferred.resolve(final_result);
+      console.log('Final resolved', phrase);
     });
     return deferred.promise;
-  });
-  Q.allSettled(searchers).then(function(results) {
-    console.log('All done with', phrase);
-    var final_result = {};
-    _.map(results, function(result) {
-      var val = result.value;
-      final_result[val.type] = val;
+  }
+
+  /** Private fns **/
+
+  function search_google(term) {
+    var deferred = Q.defer();
+    google(term, function(err, next, links) {
+      if (!err && links.length > 0) {
+        deferred.resolve(_.extend(links[0], {type: 'google'}));
+      } else {
+        deferred.resolve({type: 'google', error: 'Everything sucks'});
+      }
     });
-    deferred.resolve(final_result);
-  });
-  return deferred.promise;
-}
+    return deferred.promise;
+  }
 
-/** Private fns **/
-
-function search_google(term) {
-  var deferred = Q.defer();
-  google(term, function(err, next, links) {
-    if (!err && links.length > 0) {
-      deferred.resolve(_.extend(links[0], {type: 'google'}));
-    } else {
-      deferred.resolve({type: 'google', error: 'Everything sucks'});
-    }
-  });
-  return deferred.promise;
-}
-
-function search_urban_dictionary(term) {
-  var deferred = Q.defer();
-  /*
-  urban(term).first(function(json) {
-    json = json || {};
-    deferred.resolve(_.extend(json, {type: 'urban'}));
-  });
- */
-  deferred.resolve({type: 'urban'});
-  return deferred.promise;
-}
-
-function search_drive(term) {
-
-}
-
-function search_gmail(term) {
-  var deferred = Q.defer();
-  deferred.resolve({threads: [], type: 'gmail'});
-  return deferred.promise;
-
-  socrates_gmail.search(term).then(function(resp) {
-    deferred.resolve({
-      threads: resp.threads.slice(0, 10),
-      type: 'gmail',
+  function search_urban_dictionary(term) {
+    var deferred = Q.defer();
+    /*
+    urban(term).first(function(json) {
+      json = json || {};
+      deferred.resolve(_.extend(json, {type: 'urban'}));
     });
-  });
-  return deferred.promise;
-}
+   */
+    deferred.resolve({type: 'urban'});
+    return deferred.promise;
+  }
 
-function search_calendar(term) {
+  function search_drive(term) {
 
-}
+  }
 
-function search_freebase(term) {
-  var deferred = Q.defer();
-  freebase.sentence(term, FREEBASE_KEY_OBJ, function(desc) {
-    deferred.resolve({
-      desc: desc,
-      type: 'freebase',
-    });
-  });
-  return deferred.promise;
-}
+  function search_gmail(term) {
+    var deferred = Q.defer();
+    /*
+    deferred.resolve({threads: [], type: 'gmail'});
+    return deferred.promise;
+    */
 
-function search_freebase_image(term) {
-  var deferred = Q.defer();
-  freebase.image(term, FREEBASE_KEY_OBJ, function(url) {
-    deferred.resolve({
-      url: url.slice(0, url.indexOf('?')),
-      type: 'image',
-    });
-  });
-  return deferred.promise;
-}
-
-function search_freebase_definitions(term) {
-  var deferred = Q.defer();
-  freebase.wordnet(term, FREEBASE_KEY_OBJ, function(results) {
-    if (results.length < 1) {
-      deferred.resolve({});
-    } else {
+    socrates_gmail.search(term).then(function(resp) {
       deferred.resolve({
-        defs: _.map(results.slice(1), function(x) { return x.gloss; }),
-        type: 'defs',
+        threads: resp.threads.slice(0, 10),
+        type: 'gmail',
       });
-    }
-  });
-  return deferred.promise;
-}
-
-function search_freebase_related(term) {
-  var deferred = Q.defer();
-  freebase.related(term, FREEBASE_KEY_OBJ, function(r) {
-    deferred.resolve({
-      related: r.map(function(v) { return v.name }),
-      type: 'related',
     });
-  });
-  return deferred.promise;
-}
+    return deferred.promise;
+  }
 
-function search_freebase_wiki_link(term) {
-  var deferred = Q.defer();
-  freebase.wikipedia_page(term, FREEBASE_KEY_OBJ, function(url) {
-    deferred.resolve({
-      url: url,
-      type: 'wiki',
-    });
-  });
-  return deferred.promise;
-}
+  function search_calendar(term) {
 
-function search_freebase_geo(term) {
-  var deferred = Q.defer();
-  freebase.geolocation(term, FREEBASE_KEY_OBJ, function(latlng) {
-    deferred.resolve({
-      latlng: latlng,
-      type: 'geo',
+  }
+
+  function search_freebase(term) {
+    var deferred = Q.defer();
+    freebase.sentence(term, FREEBASE_KEY_OBJ, function(desc) {
+      deferred.resolve({
+        desc: desc,
+        type: 'freebase',
+      });
     });
-  });
-  return deferred.promise;
+    return deferred.promise;
+  }
+
+  function search_freebase_image(term) {
+    var deferred = Q.defer();
+    freebase.image(term, FREEBASE_KEY_OBJ, function(url) {
+      deferred.resolve({
+        url: url.slice(0, url.indexOf('?')),
+        type: 'image',
+      });
+    });
+    return deferred.promise;
+  }
+
+  function search_freebase_definitions(term) {
+    var deferred = Q.defer();
+    freebase.wordnet(term, FREEBASE_KEY_OBJ, function(results) {
+      if (results.length < 1) {
+        deferred.resolve({});
+      } else {
+        deferred.resolve({
+          defs: _.map(results.slice(1), function(x) { return x.gloss; }),
+          type: 'defs',
+        });
+      }
+    });
+    return deferred.promise;
+  }
+
+  function search_freebase_related(term) {
+    var deferred = Q.defer();
+    freebase.related(term, FREEBASE_KEY_OBJ, function(r) {
+      deferred.resolve({
+        related: r.map(function(v) { return v.name }),
+        type: 'related',
+      });
+    });
+    return deferred.promise;
+  }
+
+  function search_freebase_wiki_link(term) {
+    var deferred = Q.defer();
+    freebase.wikipedia_page(term, FREEBASE_KEY_OBJ, function(url) {
+      deferred.resolve({
+        url: url,
+        type: 'wiki',
+      });
+    });
+    return deferred.promise;
+  }
+
+  function search_freebase_geo(term) {
+    var deferred = Q.defer();
+    freebase.geolocation(term, FREEBASE_KEY_OBJ, function(latlng) {
+      deferred.resolve({
+        latlng: latlng,
+        type: 'geo',
+      });
+    });
+    return deferred.promise;
+  }
 }
