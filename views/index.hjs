@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'>
 <link rel='stylesheet' href='assets/css/base.css' TYPE='text/css'>
 <title>Web Speech API Demo</title>
 
@@ -10,8 +10,8 @@
 <!-- STICKY header -->
 <div id="header_container">
   <div class="header" id="header">
-    <span class="title">Socratez</span>
-    <span>real time context engine</span>
+    <span class="title">socratez</span>
+    <span>real-time context engine</span>
   </div>
 </div>
 
