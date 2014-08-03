@@ -4,14 +4,15 @@
 <link rel='stylesheet' href='assets/css/base.css' TYPE='text/css'>
 <title>Web Speech API Demo</title>
 <style>
-<h1>Socratez</h1>
-<div id="results">
-</div>
-<div class="right">
+</style>
+<div class="header">
+  <h1>Socratez</h1>
   <button id="start_button" onclick="startButton(event)">
     <img id="start_img" src="/assets/images/mic.gif" alt="Start"></button>
 </div>
 <div id="results">
+</div>
+<div id="text_results">
   <span id="final_span" class="final"></span>
   <span id="interim_span" class="interim"></span>
   <p>

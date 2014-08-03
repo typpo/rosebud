@@ -1,7 +1,7 @@
 body {
 	font-family: 'Open Sans', sans-serif;
 	font-size: 14px;
-	font-weight: 300;	
+	font-weight: 300;
 }
 #header {
 	font-size: 32px;
@@ -11,7 +11,7 @@ body {
  * {
     font-family: 'Open Sans', sans-serif;
 	font-size: 14px;
-	font-weight: 300;	
+	font-weight: 300;
   }
   a:link {
     color:#000;
@@ -48,12 +48,6 @@ body {
   .interim {
     color: gray;
   }
-  .info {
-    font-size: 14px;
-    text-align: center;
-    color: #777;
-    display: none;
-  }
   .right {
     float: right;
   }
@@ -68,13 +62,7 @@ body {
     font-size: 40px;
     font-weight: 300;
   }
-  #info {
-    font-size: 20px;
-    text-align: center;
-    color: #777;
-    visibility: hidden;
-  }
-  #results {
+  #text_results {
     font-size: 14px;
     font-weight: bold;
     border: 1px solid #ddd;
