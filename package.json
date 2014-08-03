@@ -17,6 +17,7 @@
     "underscore": "latest",
     "stopwords": "latest",
     "passport-oauth": "latest",
-    "passport-google-oauth": "latest"
+    "passport-google-oauth": "latest",
+    "passport": "latest"
   }
 }
