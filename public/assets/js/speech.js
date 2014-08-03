@@ -259,7 +259,18 @@ $(function() {
     return render('google', data);
   }
 
-  var renderingFunctions = [renderFreebase, renderUserData, renderGoogle];
+  // TODO remove hack for banana
+  function renderGmail(results, term) {
+    if (term != 'banana') return;
+    return render('gmail', data);
+  }
+
+  var renderingFunctions = [
+    renderGmail,
+    renderFreebase,
+    renderUserData,
+    renderGoogle
+  ];
   function addResultsTemplates(results) {
     var result_div = $('#results');
     templates = [];
