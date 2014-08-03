@@ -13,6 +13,11 @@ exports.run = function(query) {
     }
   }
 
+  if (!bestQuery) {
+    deferred.resolve('');
+    return deferred.promise;
+  }
+
   var originalTranscript = bestQuery.transcript;
   var words = _.filter(bestQuery.transcript.split(' '), function(word) {
     return stopwords.indexOf(word) == -1;
