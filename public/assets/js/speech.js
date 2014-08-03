@@ -126,10 +126,12 @@ $(function() {
 
   // Map from search query to response.
   var resultsCache = {};
+  var queried = {};
   /**
    * Talk to the backend with the speech that we have and get results.
    */
   function getContext(results) {
+    queried[results.transcript] = true;
     $.ajax({
       type: 'GET',
       url: '/search?q=' + JSON.stringify(results),
@@ -167,7 +169,7 @@ $(function() {
     var resultsMod = [];
     for (var i in results) {
       var result = results[i];
-      if (!(result.transcript in resultsCache)) {
+      if (!(result.transcript in resultsCache) && !(result.transcript in queried)) {
         resultsMod.push(result);
       }
     }
@@ -195,6 +197,18 @@ $(function() {
 
 
   var debugEvent1 = {
+    resultIndex: 0,
+    results: [
+      [{
+        confidence: 0.81,
+        transcript: 'banana'
+      }],
+      [{
+        confidence: 0.2,
+        transcript: 'not confident'
+      }]
+    ]};
+  var debugEvent4 = {
     resultIndex: 0,
     results: [
       [{
@@ -252,7 +266,7 @@ $(function() {
   // startButton({timestamp: 'test'});
 
 
-  var debugEvents = [debugEvent1, debugEvent2, debugEvent3];
+  var debugEvents = [debugEvent1, debugEvent2, debugEvent3, debugEvent4];
   var debug_i = 0;
   var events_cancel = setInterval(function() {
     var evt = debugEvents[debug_i];
