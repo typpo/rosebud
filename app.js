@@ -2,6 +2,11 @@ var express = require('express')
   , main = require('./routes/main.js')
   , http = require('http')
   , path = require('path')
+  , passport = require('passport')
+  , GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+
+var GOOGLE_CLIENT_ID = "--insert-google-client-id-here--";
+var GOOGLE_CLIENT_SECRET = "--insert-google-client-secret-here--";
 
 var app = express();
 
