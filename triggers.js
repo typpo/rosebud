@@ -14,6 +14,11 @@ var TRIGGER_WORDS = {
 
   'ycombinator': ALL_SEARCHERS,
   'mountain view': ALL_SEARCHERS,
+  'google': ALL_SEARCHERS,
+  'apple': ALL_SEARCHERS,
+  'facebook': ALL_SEARCHERS,
+  'silicon valley': ALL_SEARCHERS,
+  'san francisco': ALL_SEARCHERS,
 };
 exports.TRIGGER_WORDS = TRIGGER_WORDS;
 
