@@ -314,7 +314,7 @@ $(function() {
   //addResultsTemplates(debugResponse);
 
   $('#start_button').on('click', startButton);
-  // startButton({timestamp: 'test'});
+  startButton({timestamp: 'test'});
 
 
   var debugEvents = [debugEvent1, debugEvent2, debugEvent3, debugEvent4];
