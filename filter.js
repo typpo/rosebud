@@ -9,8 +9,13 @@ exports.run = function(query) {
     }
   }
 
-  bestQuery.transcript = _.filter(bestQuery.transcript.split(' '), function(word) {
+  var originalTranscript = bestQuery.transcript;
+  var words = _.filter(bestQuery.transcript.split(' '), function(word) {
     return stopwords.indexOf(word) == -1;
   });
-  return bestQuery.transcript.join(' ');
+  if (words.length > 1) {
+    // these stopwords may actually be impt
+    return originalTranscript;
+  }
+  return words.join(' ');
 }
