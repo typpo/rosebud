@@ -13,7 +13,7 @@ google.resultsPerPage = 1;
 
 exports.Dispatch = function Dispatch(phrase, req) {
   /** Constants **/
-  var SEARCH_TIMEOUT = 3*1000;
+  var SEARCH_TIMEOUT = 4*1000;
   var FREEBASE_KEY_OBJ = {key: 'AIzaSyCvQC_qRXBQDkrP_0dLLKZ3mDU1stM5VEM'};
   var ENABLED_SEARCH_ENGINES = {
                             'google': search_google,
