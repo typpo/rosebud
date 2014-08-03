@@ -12,7 +12,6 @@ $(function() {
     select_dialect.style.visibility = list[1].length == 1 ? 'hidden' : 'visible';
   }
 
-  var create_email = false;
   var final_transcript = '';
   var recognizing = false;
   var ignore_onend;
@@ -121,10 +120,6 @@ $(function() {
       return;
     }
     current_style = style;
-    copy_button.style.display = style;
-    email_button.style.display = style;
-    copy_info.style.display = 'none';
-    email_info.style.display = 'none';
   }
 
   /**
@@ -191,7 +186,6 @@ $(function() {
     return true;
   }
 
-  //startButton({timestamp: 'test'});
 
   var debugEvent = {
     resultIndex: 0,
@@ -221,7 +215,8 @@ $(function() {
     }
   };
 
-  addResultsTemplates(debugResponse);
+  //addResultsTemplates(debugResponse);
 
   $('#start_button').on('click', startButton);
+  startButton({timestamp: 'test'});
 });

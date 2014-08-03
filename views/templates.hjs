@@ -12,3 +12,18 @@
   <div class="clear"><%=data.desc%></div>
   <div class="clear">provided by <%=data.type%></div>
 </script>
+
+<script type="text/html" id="undefined_result">
+</script>
+
+<script type="text/html" id="geo_result">
+</script>
+
+<script type="text/html" id="image_result">
+</script>
+
+<script type="text/html" id="defs_result">
+</script>
+
+<script type="text/html" id="wiki_result">
+</script>
