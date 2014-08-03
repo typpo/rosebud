@@ -1,5 +1,8 @@
 <script type="text/html" id="generic_result">
-  <div id="result_<%=term%>" class="result" onclick="showRightPanel('<%=term%>')">
+  <% if(term) { %>
+    <%=term%>
+  <% } %>
+  <div class="result" <% if(term) { %> id="result_<%=term%>" onclick="showRightPanel('<%=term%>')" <% } %>>
     <%=html%>
   </div>
 </script>

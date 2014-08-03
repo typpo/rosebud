@@ -154,10 +154,7 @@ $(function() {
         console.log(data);
         var result_div = $('#results');
         html = addResultsTemplates(data, data.query);
-        result_div.prepend(tmpl('generic_result', {
-          html: html,
-          term: data.query
-        }));
+        result_div.prepend(html);
       }
     });
   }
@@ -319,6 +316,7 @@ $(function() {
   // TODO remove hack for banana
   function renderGmail(results, term, isrhs) {
     if (term != 'banana') return;
+    if (!results.gmail || !results.gmail.threads || !results.gmail.threads.length) return;
     return getBaseHtml('gmail', results);
   }
 
@@ -335,6 +333,14 @@ $(function() {
     for (var i in renderingFunctions) {
       var html = renderingFunctions[i](results.result, term, show_all);
       if (html) {
+        data = {
+          html: html,
+          term: ''
+        };
+        if (!show_all) {
+          data.term = term;
+        }
+        html = tmpl('generic_result', data);
         if (!show_all) return html;
         templates.push(html);
       }
