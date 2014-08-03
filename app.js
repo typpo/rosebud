@@ -2,11 +2,7 @@ var express = require('express')
   , main = require('./routes/main.js')
   , http = require('http')
   , path = require('path')
-  , passport = require('passport')
-  , GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-
-var GOOGLE_CLIENT_ID = "--insert-google-client-id-here--";
-var GOOGLE_CLIENT_SECRET = "--insert-google-client-secret-here--";
+  , auth = require('./auth.js')
 
 var app = express();
 
@@ -30,6 +26,9 @@ app.configure('development', function(){
 app.get('/', main.index);
 
 app.get('/search', main.query);
+
+// Setup auth routes etc
+auth.setup(app);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
