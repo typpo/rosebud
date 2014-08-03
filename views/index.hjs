@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 <link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'>
 <link rel='stylesheet' href='assets/css/base.css' TYPE='text/css'>
-<title>real time context</title>
+<title>listeningpost - real time context</title>
 
 <style>
 </style>
@@ -10,8 +10,8 @@
 <!-- STICKY header -->
 <div id="header_container">
   <div class="header" id="header">
-    <span class="brand">socratez</span>
-    <span>real-time context</span>
+    <span class="brand"><img src="/assets/images/listeningpost.png"></span>
+    <span style="float:right; display:inline;margin:6px;">real-time context</span>
   </div>
 </div>
 
