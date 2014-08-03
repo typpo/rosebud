@@ -254,6 +254,10 @@ $(function() {
   function renderUserData(results) {
   }
 
+  function renderUrban(results) {
+    return getBaseHtml('urban', results);
+  }
+
   function  renderGoogle(results) {
     var data = results['google'];
     return render('google', data);
@@ -269,6 +273,7 @@ $(function() {
     renderGmail,
     renderFreebase,
     renderUserData,
+    renderUrban,
     renderGoogle
   ];
   function addResultsTemplates(results) {
