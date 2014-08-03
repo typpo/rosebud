@@ -3,6 +3,7 @@ var stopwords = require('stopwords').english,
 var wordpos = require('wordpos');
 var Q = require('q');
 var common_words = {
+'I': true,
 'the': true,
 'of': true,
 'and': true,
