@@ -1,6 +1,6 @@
 var recognition;
 $(function() {
-  var MIN_CONFIDENCE = 0.8;
+  var MIN_CONFIDENCE = 0.4;
 
   function updateCountry() {
     for (var i = select_dialect.options.length - 1; i >= 0; i--) {
@@ -171,7 +171,7 @@ $(function() {
     var resultsMod = [];
     for (var i in results) {
       var result = results[i];
-      if (result.confidence > MIN_CONFIDENCE) {
+      if (result.confidence > MIN_CONFIDENCE && result.transcript.length < 80) {
         resultsMod.push(result);
       }
     }
@@ -304,7 +304,7 @@ $(function() {
   }
 
   function renderUrban(results, term, isrhs) {
-    if (!results.urban.definition) return;
+    if (!results.urban || !results.urban.definition) return;
     return getBaseHtml('urban', results);
   }
 
