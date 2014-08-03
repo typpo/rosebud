@@ -141,15 +141,22 @@ $(function() {
     var result_div = $('#results');
     templates = [];
     for (var type in results) {
+      // TODO rank results.
       // Don't try it with stupid non-existant templates
       if (!$('#' + type + '_result').length) continue;
-      var temp = tmpl('generic_result', {
+      var temp = tmpl(type + '_result', {
         type: type,
         data: results[type]
       });
       templates.push(temp);
+      break;
     }
-    result_div.append(templates.join(''));
+    result_div.prepend(templates.join(''));
+    return;
+    if (result_div.firstChild)
+      result_div.insertBefore(templates.join(''), result_div.firstChild);
+    else
+      result_div.append(templates.join(''));
   }
 
   /**
@@ -188,12 +195,36 @@ $(function() {
   }
 
 
-  var debugEvent = {
+  var debugEvent1 = {
     resultIndex: 0,
     results: [
       [{
         confidence: 0.81,
-        transcript: 'test'
+        transcript: 'banana'
+      }],
+      [{
+        confidence: 0.2,
+        transcript: 'not confident'
+      }]
+    ]};
+  var debugEvent2 = {
+    resultIndex: 0,
+    results: [
+      [{
+        confidence: 0.81,
+        transcript: 'orange'
+      }],
+      [{
+        confidence: 0.2,
+        transcript: 'not confident'
+      }]
+    ]};
+  var debugEvent3 = {
+    resultIndex: 0,
+    results: [
+      [{
+        confidence: 0.81,
+        transcript: 'Obama'
       }],
       [{
         confidence: 0.2,
@@ -219,5 +250,16 @@ $(function() {
   //addResultsTemplates(debugResponse);
 
   $('#start_button').on('click', startButton);
-  startButton({timestamp: 'test'});
+  // startButton({timestamp: 'test'});
+
+
+  var debugEvents = [debugEvent1, debugEvent2, debugEvent3];
+  var debug_i = 0;
+  var events_cancel = setInterval(function() {
+    var evt = debugEvents[debug_i];
+    debug_i++;
+    maybeSendContextRequest(evt);
+    if (debug_i === 3) clearInterval(events_cancel);
+  }, 3000);
+
 });
