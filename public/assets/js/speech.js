@@ -276,6 +276,7 @@ $(function() {
   }
 
   function renderUrban(results) {
+    if (!results.urban.definition) return;
     return getBaseHtml('urban', results);
   }
 
@@ -311,7 +312,7 @@ $(function() {
   }
 
   function render(type, data) {
-    if (!data || !$('#' + type + '_result').length) return;
+    if (!$('#' + type + '_result').length) return;
     return tmpl(type + '_result', {
       data: data,
       type: type
