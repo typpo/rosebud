@@ -58,7 +58,7 @@ $(function() {
       if (window.getSelection) {
         window.getSelection().removeAllRanges();
         var range = document.createRange();
-        range.selectNode(document.getElementById('final_span'));
+        //range.selectNode(document.getElementById('final_span'));
         window.getSelection().addRange(range);
       }
     };
@@ -75,8 +75,9 @@ $(function() {
         }
       }
       final_transcript = capitalize(final_transcript);
-      final_span.innerHTML = linebreak(final_transcript);
-      interim_span.innerHTML = linebreak(interim_transcript);
+      //var final_span = document.getElementById('final_span');
+      //final_span.innerHTML = linebreak(final_transcript);
+      //interim_span.innerHTML = linebreak(interim_transcript);
       if (final_transcript || interim_transcript) {
         showButtons('inline-block');
       }
@@ -107,8 +108,9 @@ $(function() {
     recognition.lang = 'en-US';
     recognition.start();
     ignore_onend = false;
-    final_span.innerHTML = '';
-    interim_span.innerHTML = '';
+    //var final_span = document.getElementById('final_span');
+    //final_span.innerHTML = '';
+    //interim_span.innerHTML = '';
     start_img.src = '/assets/images/mic-slash.gif';
     showButtons('none');
     start_timestamp = event.timeStamp;
@@ -292,6 +294,7 @@ $(function() {
   }
 
   function render(type, data) {
+    if (!data) return '';
     return tmpl(type + '_result', {
       data: data,
       type: type

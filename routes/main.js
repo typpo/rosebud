@@ -33,6 +33,12 @@ exports.query = function(req, res) {
   var filteredRequestString = filter.run(requests);
 
   dispatch.process(filteredRequestString).then(function(result) {
+    for (var key in result) {
+      if (!key || key === 'undefined') {
+        // I don't know why this happens
+        delete result[key];
+      }
+    }
     res.send({query: filteredRequestString, result: result});
   }, function() {
     res.send({error: 'Promise rejected in main.js'});

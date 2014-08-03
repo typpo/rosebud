@@ -20,7 +20,7 @@ var ENABLED_SEARCH_ENGINES = {
                           'wiki': search_freebase_wiki_link,
                           'geo': search_freebase_geo,
                           'gmail': search_gmail,
-                          //'urban': search_urban_dictionary,
+                          'urban': search_urban_dictionary,
 };
 
 /** Library setup **/
