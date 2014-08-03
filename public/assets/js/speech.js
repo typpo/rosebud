@@ -152,6 +152,7 @@ $(function() {
       return;
     }
     last_send = Date.now();
+    if (context_timeout) clearTimeout(context_timeout);
     /*
     recognition.stop();
     init();
@@ -169,7 +170,7 @@ $(function() {
         html = addResultsTemplates(data, data.query);
         result_div.prepend(html);
         setTimeout(function() {
-          var added = $('#result_' + data.query);
+          var added = $('#result_' + toId(data.query));
           var content = added.children('.content_inner')[0];
           var img = $(content).children('.img_base')[0];
           var height = content.clientHeight;
@@ -363,7 +364,7 @@ $(function() {
           term: ''
         };
         if (!show_all) {
-          data.term = term;
+          data.term = toId(term);
         }
         html = tmpl('generic_result', data);
         if (!show_all) return html;
@@ -392,5 +393,9 @@ $(function() {
     $right_column.html(html);
     $('.selected').removeClass('selected');
     $('#result_' + term).addClass('selected');
+  }
+
+  function toId(term) {
+    return term.replace(/ /g, '-');
   }
 });
