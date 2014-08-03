@@ -35,3 +35,8 @@
   <div class="clear"><%=data.desc%></div>
   <div class="clear attribution">provided by <%=data.type%></div>
 </script>
+
+<script type="text/html" id="urban">
+ <div class="title"><a href="<%=data.permalink%> target="_blank"><%=data.word%></a></div>
+  <div class="clear"><%=data.definition%></div>
+  <div class="clear attribution">provided by <%=data.type%></div>
