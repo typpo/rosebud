@@ -5,6 +5,7 @@ var google = require('./google_search_lib.js'),
     freebase = require('freebase'),
     urban = require('urban'),
     _ = require('underscore'),
+    ddg = require('ddg'),
     socrates_gmail = require('./gmail.js'),
     socrates_drive = require('./drive.js');
 
@@ -70,6 +71,18 @@ exports.Dispatch = function Dispatch(phrase, req) {
 
   function search_google(term) {
     var deferred = Q.defer();
+    //deferred.resolve({type: 'google', error: 'Everything sucks'});
+
+    ddg.query(term, function(err, data) {
+      console.log(data);
+      if (data.AbstractText) {
+        deferred.resolve({type: 'google', description: data.AbstractText, url: data.AbstractURL});
+      } else if (data.RelatedTopics && data.RelatedTopics.length > 0) {
+        deferred.resolve({type: 'google', description: data.RelatedTopics[0].Text, url: data.RelatedTopics[0].FirstURL});
+      }
+    });
+    return deferred.promise;
+
     google(term, function(err, next, links) {
       if (!err && links.length > 0) {
         deferred.resolve(_.extend(links[0], {type: 'google'}));
