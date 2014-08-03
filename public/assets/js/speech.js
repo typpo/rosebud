@@ -244,19 +244,17 @@ $(function() {
   // RENDERING LOGIC:
   // rendering functions should return html or undefined.
 
-  function renderFreebase(results, term) {
+  function renderFreebase(results) {
     var data = results['freebase'];
     if (!data.desc || !data.desc.length) return;
     data['geo'] = getBaseHtml('geo', results);
-    data.term = term;
     return render('freebase', data);
   }
 
-  function renderUserData(results, term) {
+  function renderUserData(results) {
   }
 
-  function  renderGoogle(results, term) {
-    data.term = term;
+  function  renderGoogle(results) {
     var data = results['google'];
     return render('google', data);
   }
@@ -266,10 +264,11 @@ $(function() {
     var result_div = $('#results');
     templates = [];
     for (var i in renderingFunctions) {
-      var html = renderingFunctions[i](results.result, results.query);
+      var html = renderingFunctions[i](results.result);
       if (html) {
         result_div.prepend(tmpl('generic_result', {
-          html: html
+          html: html,
+          term: results.query
         }));
         return;
       }
