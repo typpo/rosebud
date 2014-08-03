@@ -70,6 +70,8 @@ h1 {
     border: 0;
     background-color:transparent;
     padding: 0;
+    margin-left:10px;
+    height: 40px;
   }
 
   #start_img {
@@ -140,7 +142,7 @@ h1 {
  #results {
    overflow: auto;
    height: 700px;
-   padding: 20px;
+   padding: 10px;
    border-top: 1px solid #ddd;
  }
 
@@ -162,8 +164,8 @@ h1 {
    width: 44%;
    float: right;
    box-sizing: border-box;
-   padding: 10px;
-   margin-top: 20px;
+   padding: 5px;
+   margin-top: 10px;
  }
 
   .result_gmail {

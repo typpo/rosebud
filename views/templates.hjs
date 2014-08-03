@@ -69,3 +69,10 @@
   <div class="clear attribution">provided by gmail</div>
   <% } %>
  </script>
+
+<script type="text/html" id="drive_result">
+<div class="subhead">Drive Matches</div>
+<% if(data.isrhs) { %>
+  <div class="clear attribution">provided by drive</div>
+<% } %>
+ </script>

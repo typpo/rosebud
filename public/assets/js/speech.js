@@ -32,16 +32,16 @@ $(function() {
 
       recognition.onstart = function() {
         recognizing = true;
-        start_img.src = '/assets/images/mic-animate.gif';
+        start_img.src = '/assets/images/mic-animate2.gif';
       };
 
       recognition.onerror = function(event) {
         if (event.error == 'no-speech') {
-          start_img.src = '/assets/images/mic.gif';
+          start_img.src = '/assets/images/mic2.png';
           ignore_onend = true;
         }
         if (event.error == 'audio-capture') {
-          start_img.src = '/assets/images/mic.gif';
+          start_img.src = '/assets/images/mic2.png';
           ignore_onend = true;
         }
         if (event.error == 'not-allowed') {
@@ -57,7 +57,7 @@ $(function() {
         if (ignore_onend) {
           return;
         }
-        start_img.src = '/assets/images/mic.gif';
+        start_img.src = '/assets/images/mic2.png';
         if (!final_transcript) {
           return;
         }
@@ -119,7 +119,7 @@ $(function() {
     //var final_span = document.getElementById('final_span');
     //final_span.innerHTML = '';
     //interim_span.innerHTML = '';
-    start_img.src = '/assets/images/mic-slash.gif';
+    start_img.src = '/assets/images/mic-slash2.png';
     showButtons('none');
     start_timestamp = event.timeStamp;
   }
@@ -140,6 +140,19 @@ $(function() {
    */
   function getContext(results) {
     results.map(function(result) {
+      var caps = result.transcript.split(/(?=[A-Z])/);
+      if (caps.length) {
+        var newtrans = caps[caps.length - 1];
+        if (caps[caps.length - 2]) {
+          if (caps[caps.length - 2].split(' ').length <= 2) {
+            newtrans = caps[caps.length - 2] + caps[caps.length - 1];
+          }
+        }
+        result = {
+          transcript: newtrans,
+          confidence: result.confidence
+        }
+      }
       if (!queried[result.transcript]) {
         queried[result.transcript] = true;
         console.log(result.transcript);
@@ -325,7 +338,11 @@ $(function() {
     return render('freebase', data);
   }
 
-  function renderUserData(results, term, isrhs) {
+  function renderDrive(results, term, isrhs) {
+    if (term != 'Barack Obama') return;
+    var data = results['drive'];
+    data['isrhs'] = !!isrhs;
+    return render('drive', data);
   }
 
   function renderUrban(results, term, isrhs) {
@@ -352,9 +369,9 @@ $(function() {
   }
 
   var renderingFunctions = [
+    renderDrive,
     renderGmail,
     renderFreebase,
-    renderUserData,
     renderUrban,
     renderGoogle
   ];
