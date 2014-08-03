@@ -20,7 +20,7 @@
 <div id="main_content">
   <div id="left_column">
     <button id="start_button">
-      <img id="start_img" src="/assets/images/mic.gif" alt="Start"></button>
+      <img id="start_img" src="/assets/images/mic2.png" alt="Start"></button>
     <div id="results">
     </div>
   </div>

@@ -5,7 +5,8 @@ var google = require('google'),
     freebase = require('freebase'),
     urban = require('urban'),
     _ = require('underscore'),
-    socrates_gmail = require('./gmail.js');
+    socrates_gmail = require('./gmail.js'),
+    socrates_drive = require('./drive.js');
 
 /** Library setup **/
 google.resultsPerPage = 1;
@@ -24,6 +25,7 @@ exports.Dispatch = function Dispatch(phrase) {
                             'wiki': search_freebase_wiki_link,
                             'geo': search_freebase_geo,
                             'gmail': search_gmail,
+                            'drive': search_drive,
                             'urban': search_urban_dictionary,
   };
 
@@ -90,10 +92,6 @@ exports.Dispatch = function Dispatch(phrase) {
     return deferred.promise;
   }
 
-  function search_drive(term) {
-
-  }
-
   function search_gmail(term) {
     var deferred = Q.defer();
     /*
@@ -105,6 +103,22 @@ exports.Dispatch = function Dispatch(phrase) {
       deferred.resolve({
         threads: resp.threads.slice(0, 10),
         type: 'gmail',
+      });
+    });
+    return deferred.promise;
+  }
+
+  function search_drive(term) {
+    var deferred = Q.defer();
+    /*
+    deferred.resolve({threads: [], type: 'drive'});
+    return deferred.promise;
+    */
+
+    socrates_drive.search(term).then(function(resp) {
+      deferred.resolve({
+        result: resp,
+        type: 'drive',
       });
     });
     return deferred.promise;
