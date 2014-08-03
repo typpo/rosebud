@@ -11,7 +11,7 @@ var google = require('google'),
 /** Library setup **/
 google.resultsPerPage = 1;
 
-exports.Dispatch = function Dispatch(phrase) {
+exports.Dispatch = function Dispatch(phrase, req) {
   /** Constants **/
   var SEARCH_TIMEOUT = 3*1000;
   var FREEBASE_KEY_OBJ = {key: 'AIzaSyCvQC_qRXBQDkrP_0dLLKZ3mDU1stM5VEM'};
@@ -99,7 +99,7 @@ exports.Dispatch = function Dispatch(phrase) {
     return deferred.promise;
     */
 
-    socrates_gmail.search(term).then(function(resp) {
+    socrates_gmail.search(term, req).then(function(resp) {
       deferred.resolve({
         threads: resp.threads.slice(0, 10),
         type: 'gmail',
@@ -115,7 +115,7 @@ exports.Dispatch = function Dispatch(phrase) {
     return deferred.promise;
     */
 
-    socrates_drive.search(term).then(function(resp) {
+    socrates_drive.search(term, req).then(function(resp) {
       deferred.resolve({
         result: resp,
         type: 'drive',

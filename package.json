@@ -19,6 +19,7 @@
     "wordpos": "latest",
     "express-session": "latest",
     "connect-redis": "latest",
-    "urban": "latest"
+    "urban": "latest",
+    "process": "latest"
   }
 }

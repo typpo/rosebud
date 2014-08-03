@@ -38,7 +38,7 @@ exports.query = function(req, res) {
 
   // Then filter
   filter.run(queries).then(function(filteredRequestString) {
-    var queryThing = new dispatch.Dispatch(filteredRequestString);
+    var queryThing = new dispatch.Dispatch(filteredRequestString, req);
     queryThing.process().then(function(result) {
       for (var key in result) {
         if (!key || key === 'undefined') {

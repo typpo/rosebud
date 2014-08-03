@@ -9,7 +9,7 @@ var auth = require('./auth.js')
   , os = require('os')
   , _ = require('underscore')
 
-exports.search = function(q) {
+exports.search = function(q, req) {
   var deferred = Q.defer();
   if (os.hostname() !== 'rosebud') {
     deferred.resolve(postprocess(require('./dummy_drive.json')));
@@ -17,15 +17,13 @@ exports.search = function(q) {
   }
 
   var drive_query = 'fullText contains \'' + q + '\'';
-  console.log('start drive search for', drive_query);
   drive.files.list({
     q: drive_query,
     corpus: 'DEFAULT',  // 'DOMAIN' = public within company, vs DEFAULT (the user's)
     maxResults: 10,
     userId: 'me',
-    auth: auth.get_client(),
+    auth: auth.get_client(req),
   }, function(err, resp) {
-    console.log('end drive', err, resp);
     if (err) {
      deferred.resolve({error: 'errorrrr', val: err});
     } else {
@@ -36,6 +34,5 @@ exports.search = function(q) {
 }
 
 function postprocess(resp) {
-  console.log("OMG", resp);
   return resp;
 }
