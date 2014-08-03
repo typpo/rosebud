@@ -355,7 +355,7 @@ $(function() {
 
   function  renderGoogle(results, term, isrhs) {
     var data = results['google'];
-    if (data.error) return;
+    if (!data || data.error) return;
     if (!isrhs) {
       data['image'] = getBaseHtml('image', results);
     }
