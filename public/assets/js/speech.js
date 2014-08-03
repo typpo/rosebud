@@ -135,11 +135,15 @@ $(function() {
    * Talk to the backend with the speech that we have and get results.
    */
   function getContext(results) {
-    console.log(results.transcript);
-    queried[results.transcript] = true;
+    results.map(function(result) {
+      queried[result.transcript] = true;
+      console.log(result.transcript);
+    });
+    /*
     recognition.stop();
     init();
     startButton({timestamp: 'test'});
+   */
 
     $.ajax({
       type: 'GET',
