@@ -164,7 +164,7 @@ $(function() {
       url: '/search?q=' + JSON.stringify(debounced_requests),
       dataType: 'json',
       success: function(data) {
-        if (data.query in resultsCache) return;
+        if (!data.query || data.query in resultsCache) return;
         resultsCache[data.query] = data;
         console.log(data);
         var result_div = $('#results');
@@ -238,7 +238,7 @@ $(function() {
     results: [
       [{
         confidence: 0.81,
-        transcript: 'banana'
+        transcript: 'thong the banana YCombinator'
       }],
       [{
         confidence: 0.2,
@@ -403,6 +403,7 @@ $(function() {
   }
 
   function toId(term) {
+    term = term.replace(/'/g, '');
     return term.replace(/ /g, '-');
   }
 });
