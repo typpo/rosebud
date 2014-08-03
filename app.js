@@ -64,6 +64,6 @@ var options = {
   requestCert: false,
   rejectUnauthorized: false
 };
-https.createServer(options, app).listen(9669, function(){
-  console.log("Express server listening on port " + 9669);
+https.createServer(options, app).listen(3001, function(){
+  console.log("Express server listening on port " + 3001);
 });
