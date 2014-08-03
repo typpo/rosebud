@@ -3,7 +3,8 @@
 var dispatch = require('../dispatch.js'),
     filter = require('../filter.js'),
     auth = require('../auth.js'),
-    readline = require('readline');
+    readline = require('readline'),
+    triggers = require('../triggers.js');
 
 exports.index = function(req, res) {
   /*
@@ -29,10 +30,16 @@ exports.query = function(req, res) {
   if (auth.has_saved_tokens(req)) {
     auth.set_saved_tokens(req);
   }
-  var requests = JSON.parse(query);
-  filter.run(requests).then(function(filteredRequestString) {
 
-  var queryThing = new dispatch.Dispatch(filteredRequestString);
+  var queries = JSON.parse(query);
+
+  // Run transforms
+  triggers.trigger_transform_on_queries(queries);
+  console.log('here we are', queries);
+
+  // Then filter
+  filter.run(queries).then(function(filteredRequestString) {
+    var queryThing = new dispatch.Dispatch(filteredRequestString);
     queryThing.process().then(function(result) {
       for (var key in result) {
         if (!key || key === 'undefined') {
