@@ -6,9 +6,11 @@ var dispatch = require('../dispatch.js'),
     readline = require('readline');
 
 exports.index = function(req, res) {
+  /*
   if (!auth.has_saved_tokens(req)) {
     res.redirect('/login');
   }
+  */
   res.render('index', {
     foo: -1,
     partials: {templates: 'templates'},
