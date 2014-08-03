@@ -38,6 +38,10 @@ exports.query = function(req, res) {
 
   // Then filter
   filter.run(queries).then(function(filteredRequestString) {
+    if (filteredRequestString.trim() === '') {
+      res.send({error: 'Nothing here'});
+      return;
+    }
     var queryThing = new dispatch.Dispatch(filteredRequestString, req);
     queryThing.process().then(function(result) {
       for (var key in result) {
@@ -48,7 +52,9 @@ exports.query = function(req, res) {
       }
       if (query) {
         res.send({query: filteredRequestString, result: result});
+        return;
       }
+      res.send({error: 'Nothing at end'});
     }, function() {
       res.send({error: 'Promise rejected in main.js'});
     });
