@@ -26,6 +26,9 @@ exports.query = function(req, res) {
     res.send({error: 'i dont understnand u'});
     return;
   }
+  if (auth.has_saved_tokens(req)) {
+    auth.set_saved_tokens(req);
+  }
   var requests = JSON.parse(query);
   var filteredRequestString = filter.run(requests);
 
