@@ -22,10 +22,16 @@
 </script>
 
 <script type="text/html" id="image_result">
+<div class="img_base"><%=data.image%></div>
+  <div class="clear attribution">provided by <%=data.type%></div>
 </script>
 
 <script type="text/html" id="defs_result">
+  <div class="clear"><%=data.desc%></div>
+  <div class="clear attribution">provided by <%=data.type%></div>
 </script>
 
 <script type="text/html" id="wiki_result">
+  <div class="clear"><%=data.desc%></div>
+  <div class="clear attribution">provided by <%=data.type%></div>
 </script>

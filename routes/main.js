@@ -27,7 +27,7 @@ exports.query = function(req, res) {
   var filteredRequestString = filter.run(requests);
 
   dispatch.process(filteredRequestString).then(function(result) {
-    res.send(result);
+    res.send({query: filteredRequestString, result: result});
   }, function() {
     res.send({error: 'Promise rejected in main.js'});
   });

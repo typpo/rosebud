@@ -2,6 +2,7 @@ body {
 	font-family: 'Open Sans', sans-serif;
 	font-size: 14px;
 	font-weight: 300;
+  line-height: 20px;
 }
   a:link {
     color:#007BFF;
@@ -77,10 +78,13 @@ body {
    font-weight: 600;
  }
  .title {
-   font-size:18px;
+   font-size:20px;
    font-weight: 600;
  }
- /* Reset body padding and margins */
+ .img_base {
+   padding: 5px;
+   border: 1px solid #CACACA;
+ } /* Reset body padding and margins */
  body { margin:0; padding:0; }
 
  /* Make Header Sticky */
