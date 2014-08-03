@@ -71,7 +71,17 @@
  </script>
 
 <script type="text/html" id="drive_result">
-<div class="subhead">Drive Matches</div>
+<div class="subhead">Google Drive Matches</div>
+<% for ( var i = 0; i < data.result.items.length; i++ ) { %>
+  <div class="title">
+    <a href="<%=data.result.items[i].embedLink%>" target="_blank">
+      <%=data.result.items[i].title%>
+    </a>
+  </div>
+  <div class="clear attribution">
+    Last modified by <%=data.result.items[i].lastModifyingUserName%> on <%=data.result.items[i].modifiedDate%>
+  </div>
+<% } %>
 <% if(data.isrhs) { %>
   <div class="clear attribution">provided by drive</div>
 <% } %>

@@ -186,6 +186,7 @@ $(function() {
         setTimeout(function() {
           var added = $('#result_' + toId(data.query));
           var content = added.children('.content_inner')[0];
+          if (!content) return;
           var img = $(content).children('.img_base')[0];
           var height = content.clientHeight;
           if (img) {
@@ -353,6 +354,7 @@ $(function() {
 
   function  renderGoogle(results, term, isrhs) {
     var data = results['google'];
+    if (data.error) return;
     if (!isrhs) {
       data['image'] = getBaseHtml('image', results);
     }
