@@ -3,20 +3,32 @@
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
 <link rel='stylesheet' href='assets/css/base.css' TYPE='text/css'>
 <title>Web Speech API Demo</title>
+
 <style>
 </style>
-<div class="header">
-  <h1>Socratez</h1>
-  <button id="start_button">
-    <img id="start_img" src="/assets/images/mic.gif" alt="Start"></button>
+
+<!-- STICKY header -->
+<div id="header_container">
+  <div class="header" id="header">
+    <span class="title">Socratez</span>
+    <span>real time context engine</span>
+  </div>
 </div>
-<div id="results">
+
+
+<!-- Main content -->
+<div id="main_content">
+  <div id="left_column">
+    <button id="start_button">
+      <img id="start_img" src="/assets/images/mic.gif" alt="Start"></button>
+    <div id="results">
+  </div>
+  <div id="right_column">
+  </div>
 </div>
-<div id="text_results">
-  <span id="final_span" class="final"></span>
-  <span id="interim_span" class="interim"></span>
-  <p>
-</div>
+
+
+<!-- scripts -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="/assets/js/template.js"></script>
 <script src="/assets/js/speech.js"></script>
