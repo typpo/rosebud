@@ -80,3 +80,52 @@ body {
    font-size:18px;
    font-weight: 600;
  }
+ /* Reset body padding and margins */
+ body { margin:0; padding:0; }
+
+ /* Make Header Sticky */
+ #header_container {
+   background:#eee;
+   border:1px solid #ddd;
+   height:60px;
+   left:0;
+   position:fixed;
+   width:100%;
+   top:0;
+ }
+
+ #header{
+   margin-top: 16px;
+   margin-left: 10px;
+ }
+
+ .title {
+   font-size: 18px;
+   font-weight: bold;
+   color: blue;
+ }
+
+ /* CSS for the content of page. I am giving top and bottom padding of 60px to make sure the header and footer do not overlap the content.*/
+ #main_content {
+   margin:0 auto;
+   overflow:auto;
+   padding:60px 0;
+   width:100%;
+ }
+
+ #left_column {
+   width: 55%;
+   float: left;
+   border-right: 1px solid #ddd;
+ }
+
+ #results {
+   overflow: auto;
+   height: 500px;
+   padding-left: 20px;
+   border-top: 1px solid #ddd;
+ }
+
+ .result {
+ }
+
