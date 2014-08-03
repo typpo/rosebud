@@ -359,5 +359,7 @@ $(function() {
     var $right_column = $('#right_column');
     var html = addResultsTemplates(resultsCache[term], term, true);
     $right_column.html(html);
+    $('.selected').removeClass('selected');
+    $('#result_' + term).addClass('selected');
   }
 });

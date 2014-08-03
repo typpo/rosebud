@@ -30,7 +30,7 @@ exports.query = function(req, res) {
     auth.set_saved_tokens(req);
   }
   var requests = JSON.parse(query);
-  var filteredRequestString = filter.run(requests);
+  filter.run(requests).then(function(filteredRequestString) {
 
   var queryThing = new dispatch.Dispatch(filteredRequestString);
   queryThing.process().then(function(result) {

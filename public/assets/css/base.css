@@ -147,6 +147,10 @@ h1 {
   padding: 10px;
  }
 
+ .selected {
+   background-color: #FFFFCC;
+ }
+
  #right_column {
    width: 44%;
    float: right;
@@ -160,6 +164,10 @@ h1 {
   padding: 5px;
   font-size: 14px;
  }
+
+.result:hover {
+  cursor: pointer;
+}
 
   .subhead {
   color: #333;
