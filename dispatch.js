@@ -52,16 +52,14 @@ exports.Dispatch = function Dispatch(phrase) {
 
     var deferred = Q.defer();
     Q.all(searchers).then(function(results) {
-      console.log('All done with', phrase);
       var final_result = {};
-      console.log(results);
       results.map(function(result) {
         //var val = result.value;
         var val = result;
         final_result[val.type] = val;
       });
       deferred.resolve(final_result);
-      console.log('Final resolved', phrase);
+      console.log('All done with', phrase);
     });
     return deferred.promise;
   }
