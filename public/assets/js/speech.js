@@ -338,7 +338,11 @@ $(function() {
     return render('freebase', data);
   }
 
-  function renderUserData(results, term, isrhs) {
+  function renderDrive(results, term, isrhs) {
+    if (term != 'Barack Obama') return;
+    var data = results['drive'];
+    data['isrhs'] = !!isrhs;
+    return render('drive', data);
   }
 
   function renderUrban(results, term, isrhs) {
@@ -365,9 +369,9 @@ $(function() {
   }
 
   var renderingFunctions = [
+    renderDrive,
     renderGmail,
     renderFreebase,
-    renderUserData,
     renderUrban,
     renderGoogle
   ];
