@@ -1,6 +1,7 @@
 var recognition;
 $(function() {
   var MIN_CONFIDENCE = 0.4;
+  var DEBOUNCE_TIME = 2000;
 
   function updateCountry() {
     for (var i = select_dialect.options.length - 1; i >= 0; i--) {
@@ -17,6 +18,9 @@ $(function() {
   var recognizing = false;
   var ignore_onend;
   var start_timestamp;
+  var last_send;
+  var debounced_requests = [];
+  var context_timeout;
   function init() {
     if (!('webkitSpeechRecognition' in window)) {
       upgrade();
@@ -136,9 +140,18 @@ $(function() {
    */
   function getContext(results) {
     results.map(function(result) {
-      queried[result.transcript] = true;
-      console.log(result.transcript);
+      if (!queried[result.transcript]) {
+        queried[result.transcript] = true;
+        console.log(result.transcript);
+        debounced_requests.push(result);
+      }
     });
+    if (last_send && Date.now() - last_send < DEBOUNCE_TIME) {
+      if (context_timeout) clearTimeout(context_timeout);
+      context_timeout = setTimeout(function() { getContext([]); }, DEBOUNCE_TIME/10);
+      return;
+    }
+    last_send = Date.now();
     /*
     recognition.stop();
     init();
@@ -147,7 +160,7 @@ $(function() {
 
     $.ajax({
       type: 'GET',
-      url: '/search?q=' + JSON.stringify(results),
+      url: '/search?q=' + JSON.stringify(debounced_requests),
       dataType: 'json',
       success: function(data) {
         resultsCache[data.query] = data;
@@ -168,6 +181,7 @@ $(function() {
         }, 100);
       }
     });
+    debounced_requests = [];
   }
 
   /**
