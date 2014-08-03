@@ -141,7 +141,7 @@ $(function() {
     var result_div = $('#results');
     templates = [];
     for (var type in results) {
-      //TODO use correct templates
+      if (!$('#' + type + '_result').length) continue;
       var temp = tmpl(type + '_result', {
         type: type,
         data: results[type]
