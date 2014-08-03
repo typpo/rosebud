@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 <link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'>
 <link rel='stylesheet' href='assets/css/base.css' TYPE='text/css'>
-<title>Web Speech API Demo</title>
+<title>real time context</title>
 
 <style>
 </style>
@@ -11,7 +11,7 @@
 <div id="header_container">
   <div class="header" id="header">
     <span class="brand">socratez</span>
-    <span>real-time context engine</span>
+    <span>real-time context</span>
   </div>
 </div>
 
