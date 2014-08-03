@@ -8,7 +8,7 @@ var google = require('google'),
     socrates_gmail = require('./gmail.js');
 
 /** Constants **/
-var SEARCH_TIMEOUT = 4*1000;
+var SEARCH_TIMEOUT = 3*1000;
 var FREEBASE_KEY_OBJ = {key: 'AIzaSyCvQC_qRXBQDkrP_0dLLKZ3mDU1stM5VEM'};
 var ENABLED_SEARCH_ENGINES = {
                           'google': search_google,
@@ -20,7 +20,7 @@ var ENABLED_SEARCH_ENGINES = {
                           'wiki': search_freebase_wiki_link,
                           'geo': search_freebase_geo,
                           'gmail': search_gmail,
-                          'urban': search_urban_dictionary,
+                          //'urban': search_urban_dictionary,
 };
 
 /** Library setup **/
@@ -36,13 +36,13 @@ exports.process = function(phrase) {
     var deferred = Q.defer();
     var promise = fn(phrase);
     Q.when(promise, deferred.resolve);
-    setTimeout(function() {
-      console.warn(key, 'timed out');
+    promise.timeout(SEARCH_TIMEOUT).then(function() {
       deferred.resolve({type: key, error: 'timed out @ ' + SEARCH_TIMEOUT});
-    }, SEARCH_TIMEOUT);
+    });
     return deferred.promise;
   });
   Q.allSettled(searchers).then(function(results) {
+    console.log('All done with', phrase);
     var final_result = {};
     _.map(results, function(result) {
       var val = result.value;
@@ -70,6 +70,7 @@ function search_google(term) {
 function search_urban_dictionary(term) {
   var deferred = Q.defer();
   urban(term).first(function(json) {
+    json = json || {};
     deferred.resolve(_.extend(json, {type: 'urban'}));
   });
   return deferred.promise;

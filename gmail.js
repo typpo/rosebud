@@ -5,6 +5,7 @@ var auth = require('./auth.js')
   , gmail = googleapis.gmail('v1')
   , Q = require('q')
   , os = require('os')
+  , _ = require('underscore')
 
   //gmail.users.messages.get
   //https://github.com/google/google-api-nodejs-client/blob/master/apis/gmail/v1.js#L490
@@ -15,7 +16,7 @@ var auth = require('./auth.js')
 exports.search = function(q) {
   var deferred = Q.defer();
   if (os.hostname() !== 'rosebud') {
-    deferred.resolve(require('./dummy_gmail.json'));
+    deferred.resolve(postprocess(require('./dummy_gmail.json')));
     return deferred.promise;
   }
 
@@ -27,8 +28,16 @@ exports.search = function(q) {
     if (err) {
      deferred.resolve({error: 'errorrrr', val: err});
     } else {
-     deferred.resolve(resp);
+      deferred.resolve(postprocess(resp));
     }
   });
   return deferred.promise;
+}
+
+function postprocess(resp) {
+  if (!resp.threads) return {threads: []};
+  for (var i=0; i < resp.threads.length; i++) {
+    resp.threads[i].url = 'https://mail.google.com/mail/u/0/#inbox/' + resp.threads[i].id;
+  }
+  return resp;
 }

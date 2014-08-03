@@ -47,6 +47,9 @@ exports.get_client = function() {
 }
 
 exports.has_saved_tokens = function(req) {
+  if (!req.session) {
+    return false;
+  }
   return !!req.session.tokens;
 }
 
