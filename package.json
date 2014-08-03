@@ -20,6 +20,7 @@
     "express-session": "latest",
     "connect-redis": "latest",
     "urban": "latest",
-    "process": "latest"
+    "process": "latest",
+    "cheerio": "latest"
   }
 }
