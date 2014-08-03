@@ -8,6 +8,8 @@ exports.run = function(query) {
   var wp = new wordpos();
   var deferred = Q.defer();
   var bestQuery;
+  var epsilon = .05;
+  query.reverse();   // we prefer the longest phrases, queries done most recently
   for (var i = 0; i < query.length; ++i) {
     if (!bestQuery || bestQuery.confidence < query[i].confidence) {
       bestQuery = query[i];

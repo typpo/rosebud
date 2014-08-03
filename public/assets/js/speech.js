@@ -140,25 +140,13 @@ $(function() {
    */
   function getContext(results) {
     results.map(function(result) {
-      var caps = result.transcript.split(/(?=[A-Z])/);
-      if (caps.length) {
-        var newtrans = caps[caps.length - 1];
-        if (caps[caps.length - 2]) {
-          if (caps[caps.length - 2].split(' ').length <= 2) {
-            newtrans = caps[caps.length - 2] + caps[caps.length - 1];
-          }
-        }
-        result = {
-          transcript: newtrans,
-          confidence: result.confidence
-        }
-      }
       if (!queried[result.transcript]) {
         queried[result.transcript] = true;
         console.log(result.transcript);
         debounced_requests.push(result);
       }
     });
+    last_send = null;
     if (last_send && Date.now() - last_send < DEBOUNCE_TIME) {
       if (context_timeout) clearTimeout(context_timeout);
       context_timeout = setTimeout(function() { getContext([]); }, DEBOUNCE_TIME/10);
@@ -194,7 +182,7 @@ $(function() {
           }
 
           added.css({'max-height': height + 'px'});
-        }, 100);
+        }, 1);
       }
     });
     debounced_requests = [];
@@ -236,7 +224,21 @@ $(function() {
 
     var results = [];
     for (var i = event.resultIndex; i < event.results.length; ++i) {
-      results.push(event.results[i][0]);
+      var result = event.results[i][0];
+      var caps = result.transcript.split(/(?=[A-Z])/);
+      if (caps.length) {
+        var newtrans = caps[caps.length - 1];
+        if (caps[caps.length - 2]) {
+          if (caps[caps.length - 2].split(' ').length <= 2) {
+            newtrans = caps[caps.length - 2] + caps[caps.length - 1];
+          }
+        }
+        result = {
+          transcript: newtrans,
+          confidence: result.confidence
+        }
+      }
+      results.push(result);
     }
     for (var i in shouldSendFunctions) {
       results = shouldSendFunctions[i](results);
