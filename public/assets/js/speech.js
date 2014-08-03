@@ -292,7 +292,7 @@ $(function() {
   // RENDERING LOGIC:
   // rendering functions should return html or undefined.
 
-  function renderFreebase(results) {
+  function renderFreebase(results, term, isrhs) {
     var data = results['freebase'];
     if (!data.desc || !data.desc.length) return;
     data['geo'] = getBaseHtml('geo', results);
@@ -300,22 +300,24 @@ $(function() {
     return render('freebase', data);
   }
 
-  function renderUserData(results) {
+  function renderUserData(results, term, isrhs) {
   }
 
-  function renderUrban(results) {
+  function renderUrban(results, term, isrhs) {
     if (!results.urban.definition) return;
     return getBaseHtml('urban', results);
   }
 
-  function  renderGoogle(results) {
+  function  renderGoogle(results, term, isrhs) {
     var data = results['google'];
-    data['image'] = getBaseHtml('image', results);
+    if (!isrhs) {
+      data['image'] = getBaseHtml('image', results);
+    }
     return render('google', data);
   }
 
   // TODO remove hack for banana
-  function renderGmail(results, term) {
+  function renderGmail(results, term, isrhs) {
     if (term != 'banana') return;
     return getBaseHtml('gmail', results);
   }
@@ -331,7 +333,7 @@ $(function() {
   function addResultsTemplates(results, term, show_all) {
     templates = [];
     for (var i in renderingFunctions) {
-      var html = renderingFunctions[i](results.result, term);
+      var html = renderingFunctions[i](results.result, term, show_all);
       if (html) {
         if (!show_all) return html;
         templates.push(html);
