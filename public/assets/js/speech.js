@@ -267,8 +267,23 @@ function getContext(results) {
     dataType: 'json',
     success: function(data) {
       console.log(data);
+      addResultsTemplates(data);
     }
   });
+}
+
+function addResultsTemplates(results) {
+  var result_div = $('#results');
+  templates = [];
+  for (var type in results) {
+    //TODO use correct templates
+    var temp = tmpl('generic_result', {
+      type: type,
+      text: results[type].desc || results[type].description
+    });
+    templates.push(temp);
+  }
+  result_div.append(templates.join(''));
 }
 
 /**
@@ -306,7 +321,7 @@ function maybeSendContextRequest(event) {
   return true;
 }
 
-startButton({timestamp: 'test'});
+//startButton({timestamp: 'test'});
 
 var debugEvent = {
   resultIndex: 0,
@@ -322,3 +337,18 @@ var debugEvent = {
   ]};
 
 //maybeSendContextRequest(debugEvent);
+var debugResponse = {
+  google: {
+    description: "Learn why Cheerios® has been a tasty, trusted family favorite for generations.",
+    href: "http://www.cheerios.com/",
+    link: "http://www.cheerios.com/",
+    title: "Get to know Cheerios",
+    type: "google"
+  },
+  freebase: {
+    desc: "Cheerios is a brand of breakfast cereal by General Mills introduced on May 1, 1941 originally named CheeriOats.",
+    type: "freebase"
+  }
+};
+
+addResultsTemplates(debugResponse);

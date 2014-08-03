@@ -80,9 +80,9 @@
     padding: 0;
   }
 </style>
-<h1 class="center" id="headline">
-  <a href="http://dvcs.w3.org/hg/speech-api/raw-file/tip/speechapi.html">
-    Web Speech API</a> Demonstration</h1>
+<h1>Socratez</h1>
+<div id="results">
+</div>
 <div id="info">
   <p id="info_start">Click on the microphone icon and begin speaking.</p>
   <p id="info_speak_now">Speak now.</p>
@@ -135,5 +135,6 @@
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
-<script src="/assets/js/speech.js">
-</script>
+<script src="/assets/js/template.js"></script>
+<script src="/assets/js/speech.js"></script>
+{{> templates }}
