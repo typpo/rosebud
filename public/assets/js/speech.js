@@ -237,7 +237,7 @@ $(function() {
     results: [
       [{
         confidence: 0.81,
-        transcript: 'banana pie'
+        transcript: 'banana'
       }],
       [{
         confidence: 0.2,
@@ -318,6 +318,7 @@ $(function() {
   function renderFreebase(results, term, isrhs) {
     var data = results['freebase'];
     if (!data.desc || !data.desc.length) return;
+    data['isrhs'] = !!isrhs;
     data['geo'] = getBaseHtml('geo', results);
     data['image'] = getBaseHtml('image', results);
     return render('freebase', data);
@@ -328,6 +329,7 @@ $(function() {
 
   function renderUrban(results, term, isrhs) {
     if (!results.urban || !results.urban.definition) return;
+    results['urban']['isrhs'] = !!isrhs;
     return getBaseHtml('urban', results);
   }
 
@@ -336,6 +338,7 @@ $(function() {
     if (!isrhs) {
       data['image'] = getBaseHtml('image', results);
     }
+    data['isrhs'] = !!isrhs;
     return render('google', data);
   }
 
@@ -343,6 +346,7 @@ $(function() {
   function renderGmail(results, term, isrhs) {
     if (term != 'banana') return;
     if (!results.gmail || !results.gmail.threads || !results.gmail.threads.length) return;
+    results['gmail']['isrhs'] = !!isrhs;
     return getBaseHtml('gmail', results);
   }
 
@@ -368,7 +372,6 @@ $(function() {
           data.term = term;
           data.id = toId(term);
         }
-        console.log(data);
         html = tmpl('generic_result', data);
         if (!show_all) return html;
         templates.push(html);
