@@ -21,6 +21,8 @@
     "connect-redis": "latest",
     "urban": "latest",
     "process": "latest",
-    "cheerio": "latest"
+    "cheerio": "latest",
+    "ddg": "latest",
+    "request": "latest"
   }
 }
