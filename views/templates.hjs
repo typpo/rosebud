@@ -2,7 +2,7 @@
   <div class="result" <% if(term) { %> style="max-height: 0px;" id="result_<%=id%>" onclick="showRightPanel('<%=term%>')" <% } %>>
     <div class="content_inner">
       <% if(term) { %>
-        <%=term%>
+        <div class="search_term"><%=term%></div>
       <% } %>
       <%=html%>
     </div>

@@ -2,7 +2,8 @@ body {
 	font-family: Lato, sans-serif;
 	font-size: 16px;
 	font-weight: 300;
-  line-height: 24px;
+  line-height: 22px;
+  color: #333;
 }
 
 h1 {
@@ -72,7 +73,7 @@ h1 {
   }
 
   #start_img {
-    width: 25px;
+    width: 35px;
   }
  .clear {
  	clear: right;
@@ -102,6 +103,7 @@ h1 {
    float: left;
    clear: left;
    margin-right: 10px;
+   background-color: #FFF;
  } /* Reset body padding and margins */
  body { margin:0; padding:0; }
 
@@ -117,7 +119,7 @@ h1 {
  }
 
  #header{
-   margin-top: 16px;
+   margin-top: 12px;
    margin-left: 10px;
  }
 
@@ -125,7 +127,7 @@ h1 {
  #main_content {
    margin:0 auto;
    overflow:auto;
-   padding:80px 0;
+   padding:60px 0;
    width:100%;
  }
 
@@ -178,4 +180,16 @@ h1 {
  color: #333;
  font-weight: 700;
  font-size: 12px;
+}
+
+.search_term {
+  color: #111;
+  font-weight: 400;
+  font-size: 18px;
+  display: inline-block;
+  padding: 5px;
+  border: 1px solid #CCCCCC;
+  border-radius: 3px;
+  background-color: #FFF;
+  margin-right: 5px;
 }
