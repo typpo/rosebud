@@ -140,6 +140,19 @@ $(function() {
    */
   function getContext(results) {
     results.map(function(result) {
+      var caps = result.transcript.split(/(?=[A-Z])/);
+      if (caps.length) {
+        var newtrans = caps[caps.length - 1];
+        if (caps[caps.length - 2]) {
+          if (caps[caps.length - 2].split(' ').length <= 2) {
+            newtrans = caps[caps.length - 2] + caps[caps.length - 1];
+          }
+        }
+        result = {
+          transcript: newtrans,
+          confidence: result.confidence
+        }
+      }
       if (!queried[result.transcript]) {
         queried[result.transcript] = true;
         console.log(result.transcript);
