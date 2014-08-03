@@ -11,6 +11,9 @@ exports.index = function(req, res) {
     res.redirect('/login');
   }
   */
+  if (auth.has_saved_tokens(req)) {
+    auth.set_saved_tokens(req);
+  }
   res.render('index', {
     foo: -1,
     partials: {templates: 'templates'},
@@ -35,6 +38,7 @@ exports.query = function(req, res) {
 
 exports.test = function(req, res) {
   // Try to search this user's gmail acct
+  req.session.butts = 123123;
   var socrates_gmail = require('../gmail.js');
   if (auth.has_saved_tokens(req)) {
     auth.set_saved_tokens(req);
