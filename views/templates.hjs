@@ -1,9 +1,11 @@
 <script type="text/html" id="generic_result">
-  <% if(term) { %>
-    <%=term%>
-  <% } %>
-  <div class="result" <% if(term) { %> id="result_<%=term%>" onclick="showRightPanel('<%=term%>')" <% } %>>
-    <%=html%>
+  <div class="result" <% if(term) { %> style="max-height: 0px;" id="result_<%=term%>" onclick="showRightPanel('<%=term%>')" <% } %>>
+    <div class="content_inner">
+      <% if(term) { %>
+        <%=term%>
+      <% } %>
+      <%=html%>
+    </div>
   </div>
 </script>
 

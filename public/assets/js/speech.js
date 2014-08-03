@@ -155,6 +155,17 @@ $(function() {
         var result_div = $('#results');
         html = addResultsTemplates(data, data.query);
         result_div.prepend(html);
+        setTimeout(function() {
+          var added = $('#result_' + data.query);
+          var content = added.children('.content_inner')[0];
+          var img = $(content).children('.img_base')[0];
+          var height = content.clientHeight;
+          if (img) {
+            height = Math.max(content.clientHeight + 20, img.clientHeight + 40);
+          }
+
+          added.css({'max-height': height + 'px'});
+        }, 100);
       }
     });
   }
