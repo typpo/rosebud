@@ -3,7 +3,8 @@ var dispatch = require('../dispatch.js'),
 
 exports.index = function(req, res) {
   res.render('index', {
-    foo: -1
+    foo: -1,
+    partials: {templates: 'templates'},
   });
 }
 
