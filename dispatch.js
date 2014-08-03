@@ -1,6 +1,6 @@
 'use strict';
 
-var google = require('google'),
+var google = require('./google_search_lib.js'),
     Q = require('q'),
     freebase = require('freebase'),
     urban = require('urban'),
@@ -74,6 +74,7 @@ exports.Dispatch = function Dispatch(phrase, req) {
       if (!err && links.length > 0) {
         deferred.resolve(_.extend(links[0], {type: 'google'}));
       } else {
+        console.log('google err', err, next, links);
         deferred.resolve({type: 'google', error: 'Everything sucks'});
       }
     });
