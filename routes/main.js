@@ -38,7 +38,13 @@ exports.query = function(req, res) {
 
   // Then filter
   filter.run(queries).then(function(filteredRequestString) {
-    if (filteredRequestString.trim() === '') {
+    filteredRequestString = filteredRequestString.trim()
+    if (filteredRequestString === '') {
+      res.send({error: 'Nothing here'});
+      return;
+    }
+    if (!isNaN(filteredRequestString[0])) {
+      // it's a number, throw it out
       res.send({error: 'Nothing here'});
       return;
     }
