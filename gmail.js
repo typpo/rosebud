@@ -23,6 +23,7 @@ exports.search = function(q) {
   gmail.users.threads.list({
     userId: 'me',
     q: q,
+    maxResults: 10,
     auth: auth.get_client(),
   }, function(err, resp) {
     if (err) {
