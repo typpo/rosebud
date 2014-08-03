@@ -35,3 +35,16 @@
   <div class="clear"><%=data.desc%></div>
   <div class="clear attribution">provided by <%=data.type%></div>
 </script>
+
+<script type="text/html" id="urban">
+ <div class="title"><a href="<%=data.permalink%> target="_blank"><%=data.word%></a></div>
+  <div class="clear"><%=data.definition%></div>
+  <div class="clear attribution">provided by <%=data.type%></div>
+</script>
+
+<script type="text/html" id="gmail">
+<% for ( var i = 0; i < data.threads.length; i++ ) { %>
+  <div class="clear"><a href="<%=data.threads[i].url%>"><%=data.threads[i].snippet%></a></div>
+  <% } %>
+  <div class="clear attribution">provided by <%=data.type%></div>
+ </script>
