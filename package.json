@@ -16,8 +16,7 @@
     "freebase": "latest",
     "underscore": "latest",
     "stopwords": "latest",
-    "passport-oauth": "latest",
-    "passport-google-oauth": "latest",
-    "passport": "latest"
+    "express-session": "latest",
+    "connect-redis": "latest"
   }
 }

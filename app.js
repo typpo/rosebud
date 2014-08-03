@@ -1,7 +1,10 @@
 var express = require('express')
   , main = require('./routes/main.js')
   , http = require('http')
+  , fs = require('fs')
   , path = require('path')
+  , session = require('express-session')
+  , RedisStore = require('connect-redis')(session)
   , auth = require('./auth.js')
 
 var app = express();
@@ -17,6 +20,20 @@ app.configure(function(){
   app.use(app.router);
   //app.use(require('less-middleware')(path.join(__dirname + '/public' )));
   app.use(express.static(path.join(__dirname, 'public')));
+  app.use(express.cookieParser());
+  app.use(session({
+    secret: 'roger wong',
+    resave: true,
+    saveUninitialized: true,
+    store: new RedisStore(),
+/*
+    cookie: {
+      path    : '/',
+      httpOnly: false,
+      maxAge  : 24*60*60*1000
+    },
+*/
+  }));
 });
 
 app.configure('development', function(){
@@ -25,11 +42,25 @@ app.configure('development', function(){
 
 app.get('/', main.index);
 
+app.get('/test', main.test);
+
 app.get('/search', main.query);
 
-// Setup auth routes etc
-auth.setup(app);
+app.get('/auth/google/callback', auth.google_callback);
+app.get('/auth/login', auth.login);
+
+// Https
+var https = require('https');
+var pk = fs.readFileSync('rosebud-key.pem', 'utf8');
+var cert = fs.readFileSync('rosebud-cert.pem', 'utf8');
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
+
+var credentials = {key: pk, cert: cert};
+/*
+https.createServer(app, credentials).listen(app.get('port'), function(){
+  console.log("Express server listening on port " + app.get('port'));
+});
+*/
