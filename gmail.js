@@ -18,7 +18,7 @@ exports.search = function(q) {
   if (os.hostname() !== 'rosebud') {
     deferred.resolve(postprocess(require('./dummy_gmail.json')));
     return deferred.promise;
-
+  }
 
   gmail.users.threads.list({
     userId: 'me',
