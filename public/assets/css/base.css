@@ -147,6 +147,10 @@ h1 {
   padding: 10px;
  }
 
+ .selected {
+   background-color: blue;
+ }
+
  #right_column {
    width: 44%;
    float: right;
