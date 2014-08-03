@@ -69,10 +69,13 @@ function search_google(term) {
 
 function search_urban_dictionary(term) {
   var deferred = Q.defer();
+  /*
   urban(term).first(function(json) {
     json = json || {};
     deferred.resolve(_.extend(json, {type: 'urban'}));
   });
+ */
+  deferred.resolve({type: 'urban'});
   return deferred.promise;
 }
 
