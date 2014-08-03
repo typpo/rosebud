@@ -278,9 +278,9 @@ $(function() {
     templates = [];
     for (var type in results) {
       //TODO use correct templates
-      var temp = tmpl('generic_result', {
+      var temp = tmpl(type + '_result', {
         type: type,
-        text: results[type].desc || results[type].description
+        data: results[type]
       });
       templates.push(temp);
     }

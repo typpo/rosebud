@@ -2,6 +2,30 @@
 <meta charset="utf-8">
 <title>Web Speech API Demo</title>
 <style>
+  #results {
+    width: 40%;
+    height: 100%;
+    float: left;
+  }
+
+  html, body {
+    height: 100%
+  }
+
+  .content {
+    min-height: 100%;
+    margin-bottom: -50px;
+  }
+
+  .content:after {
+    content: "";
+    display: block;
+  }
+
+  .footer, .content:after {
+    height: 50px;
+  }
+
   * {
     font-family: Verdana, Arial, sans-serif;
   }
@@ -40,12 +64,6 @@
   .interim {
     color: gray;
   }
-  .info {
-    font-size: 14px;
-    text-align: center;
-    color: #777;
-    display: none;
-  }
   .right {
     float: right;
   }
@@ -60,13 +78,7 @@
     font-size: 40px;
     font-weight: 300;
   }
-  #info {
-    font-size: 20px;
-    text-align: center;
-    color: #777;
-    visibility: hidden;
-  }
-  #results {
+  #text_results {
     font-size: 14px;
     font-weight: bold;
     border: 1px solid #ddd;
@@ -79,59 +91,22 @@
     background-color:transparent;
     padding: 0;
   }
+
+
 </style>
-<h1>Socratez</h1>
-<div id="results">
+<div class="content">
+  <div id="header">
+    <h1>Socratez</h1>
+    <button id="start_button" onclick="startButton(event)">
+      <img id="start_img" src="/assets/images/mic.gif" alt="Start"></button>
+  </div>
+  <div id="results">
+  </div>
 </div>
-<div id="info">
-  <p id="info_start">Click on the microphone icon and begin speaking.</p>
-  <p id="info_speak_now">Speak now.</p>
-  <p id="info_no_speech">No speech was detected. You may need to adjust your
-    <a href="//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">
-      microphone settings</a>.</p>
-  <p id="info_no_microphone" style="display:none">
-    No microphone was found. Ensure that a microphone is installed and that
-    <a href="//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">
-    microphone settings</a> are configured correctly.</p>
-  <p id="info_allow">Click the "Allow" button above to enable your microphone.</p>
-  <p id="info_denied">Permission to use microphone was denied.</p>
-  <p id="info_blocked">Permission to use microphone is blocked. To change,
-    go to chrome://settings/contentExceptions#media-stream</p>
-  <p id="info_upgrade">Web Speech API is not supported by this browser.
-     Upgrade to <a href="//www.google.com/chrome">Chrome</a>
-     version 25 or later.</p>
-</div>
-<div class="right">
-  <button id="start_button" onclick="startButton(event)">
-    <img id="start_img" src="/assets/images/mic.gif" alt="Start"></button>
-</div>
-<div id="results">
+<div id="footer">
   <span id="final_span" class="final"></span>
   <span id="interim_span" class="interim"></span>
   <p>
-</div>
-<div class="center">
-  <div class="sidebyside" style="text-align:right">
-    <button id="copy_button" class="button" onclick="copyButton()">
-      Copy and Paste</button>
-    <div id="copy_info" class="info">
-      Press Control-C to copy text.<br>(Command-C on Mac.)
-    </div>
-  </div>
-  <div class="sidebyside">
-    <button id="email_button" class="button" onclick="emailButton()">
-      Create Email</button>
-    <div id="email_info" class="info">
-      Text sent to default email application.<br>
-      (See chrome://settings/handlers to change.)
-    </div>
-  </div>
-  <p>
-  <div id="div_language">
-    <select id="select_language" onchange="updateCountry()"></select>
-    &nbsp;&nbsp;
-    <select id="select_dialect"></select>
-  </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
