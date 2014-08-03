@@ -164,6 +164,7 @@ $(function() {
       url: '/search?q=' + JSON.stringify(debounced_requests),
       dataType: 'json',
       success: function(data) {
+        if (data.query in resultsCache) return;
         resultsCache[data.query] = data;
         console.log(data);
         var result_div = $('#results');
