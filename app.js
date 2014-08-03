@@ -20,19 +20,19 @@ app.configure(function(){
   //app.use(require('less-middleware')(path.join(__dirname + '/public' )));
   app.use(express.static(path.join(__dirname, 'public')));
   app.use(express.cookieParser());
-  /*
   app.use(session({
     secret: 'roger wong',
     resave: true,
     saveUninitialized: true,
     store: new RedisStore(),
   }));
- */
+/*
   app.use(express.session({
     secret: 'boners',
-    store: new RedisStore,
+    store: new RedisStore(),
     key: 'socrates.sess',
   }));
+ */
   app.use(app.router);
 });
 

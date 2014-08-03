@@ -78,7 +78,8 @@ function search_gmail(term) {
   var deferred = Q.defer();
   socrates_gmail.search(term).then(function(resp) {
     deferred.resolve({
-      threads: resp.threads.slice(0, 10)
+      threads: resp.threads.slice(0, 10),
+      type: 'gmail',
     });
     console.log('Resolved gmail');
   });
