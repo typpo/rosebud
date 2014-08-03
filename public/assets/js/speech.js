@@ -429,4 +429,11 @@ $(function() {
     term = term.replace(/'/g, '');
     return term.replace(/ /g, '-');
   }
+
+  function size() {
+    $('#right_column_content').height($(window).height() - 80);
+    $('#results').height($(window).height() - 80);
+  }
+  size();
+  $(window).on('resize', size);
 });
