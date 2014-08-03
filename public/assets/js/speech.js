@@ -342,6 +342,7 @@ $(function() {
   function renderDrive(results, term, isrhs) {
     if (term != 'Barack Obama') return;
     var data = results['drive'];
+    if (!data || !data.result || !data.result.length) return;
     data['isrhs'] = !!isrhs;
     return render('drive', data);
   }
@@ -354,7 +355,7 @@ $(function() {
 
   function  renderGoogle(results, term, isrhs) {
     var data = results['google'];
-    if (data.error) return;
+    if (!data || data.error) return;
     if (!isrhs) {
       data['image'] = getBaseHtml('image', results);
     }
