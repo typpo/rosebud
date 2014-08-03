@@ -1,3 +1,9 @@
 <script type="text/html" id="generic_result">
   <div><%=text%></div>
 </script>
+
+<script type="text/html" id="google_result">
+</script>
+
+<script type="text/html" id="freebase_result">
+</script>
