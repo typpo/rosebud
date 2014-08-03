@@ -63,7 +63,7 @@
 <script type="text/html" id="gmail_result">
 <div class="subhead">E-Mail Matches</div>
 <% for ( var i = 0; i < data.threads.length; i++ ) { %>
-  <div class="result_gmail">"<a href="<%=data.threads[i].url%>"><%=data.threads[i].snippet%></a>"</div>
+  <div class="result_gmail">"<a href="<%=data.threads[i].url%>" target="_blank"><%=data.threads[i].snippet%></a>"</div>
   <% } %>
   <% if(data.isrhs) { %>
   <div class="clear attribution">provided by gmail</div>
