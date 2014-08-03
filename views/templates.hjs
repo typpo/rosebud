@@ -3,14 +3,14 @@
 </script>
 
 <script type="text/html" id="google_result">
-  <a href="<%=data.href%>"><%=data.title%></a>
+  <div class="title"><a href="<%=data.href%> target="_blank"><%=data.title%></a></div>
   <div class="clear"><%=data.description%></div>
-  <div class="clear">provided by <%=data.type%></div>
+  <div class="clear attribution">provided by <%=data.type%></div>
 </script>
 
 <script type="text/html" id="freebase_result">
   <div class="clear"><%=data.desc%></div>
-  <div class="clear">provided by <%=data.type%></div>
+  <div class="clear attribution">provided by <%=data.type%></div>
 </script>
 
 <script type="text/html" id="undefined_result">
