@@ -319,12 +319,14 @@ $(function() {
 
   var debugEvents = [debugEvent1, debugEvent2, debugEvent3, debugEvent4];
   var debug_i = 0;
+  /*
   var events_cancel = setInterval(function() {
     var evt = debugEvents[debug_i];
     debug_i++;
     maybeSendContextRequest(evt);
     if (debug_i === 3) clearInterval(events_cancel);
   }, 3000);
+  */
 
 
   // RENDERING LOGIC:
@@ -340,7 +342,6 @@ $(function() {
   }
 
   function renderDrive(results, term, isrhs) {
-    if (term != 'Barack Obama') return;
     var data = results['drive'];
     if (!data || !data.result || !data.result.length) return;
     data['isrhs'] = !!isrhs;
@@ -365,7 +366,6 @@ $(function() {
 
   // TODO remove hack for banana
   function renderGmail(results, term, isrhs) {
-    if (term != 'banana') return;
     if (!results.gmail || !results.gmail.threads || !results.gmail.threads.length) return;
     results['gmail']['isrhs'] = !!isrhs;
     return getBaseHtml('gmail', results);
