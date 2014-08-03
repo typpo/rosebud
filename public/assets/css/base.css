@@ -3,18 +3,8 @@ body {
 	font-size: 14px;
 	font-weight: 300;
 }
-#header {
-	font-size: 32px;
-	font-weight: 300;
-	color: #007BFF;
-}
- * {
-    font-family: 'Open Sans', sans-serif;
-	font-size: 14px;
-	font-weight: 300;
-  }
   a:link {
-    color:#000;
+    color:#007BFF;
     text-decoration: none;
   }
   a:visited {
@@ -81,4 +71,12 @@ body {
   }
  .clear {
  	clear: both;
+ }
+ .attribution {
+   font-size: 11px;
+   font-weight: 600;
+ }
+ .title {
+   font-size:18px;
+   font-weight: 600;
  }

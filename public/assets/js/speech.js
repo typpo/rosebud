@@ -137,20 +137,6 @@ $(function() {
     });
   }
 
-  function addResultsTemplates(results) {
-    var result_div = $('#results');
-    templates = [];
-    for (var type in results) {
-      //TODO use correct templates
-      var temp = tmpl(type + '_result', {
-        type: type,
-        data: results[type]
-      });
-      templates.push(temp);
-    }
-    result_div.append(templates.join(''));
-  }
-
   /**
    * Should send functions will return a modified result list.
    * If it's a value, continue checking other checkers, otherwise we can stop.
@@ -187,12 +173,36 @@ $(function() {
   }
 
 
-  var debugEvent = {
+  var debugEvent1 = {
     resultIndex: 0,
     results: [
       [{
         confidence: 0.81,
-        transcript: 'test'
+        transcript: 'banana'
+      }],
+      [{
+        confidence: 0.2,
+        transcript: 'not confident'
+      }]
+    ]};
+  var debugEvent2 = {
+    resultIndex: 0,
+    results: [
+      [{
+        confidence: 0.81,
+        transcript: 'orange'
+      }],
+      [{
+        confidence: 0.2,
+        transcript: 'not confident'
+      }]
+    ]};
+  var debugEvent3 = {
+    resultIndex: 0,
+    results: [
+      [{
+        confidence: 0.81,
+        transcript: 'Obama'
       }],
       [{
         confidence: 0.2,
@@ -218,5 +228,60 @@ $(function() {
   //addResultsTemplates(debugResponse);
 
   $('#start_button').on('click', startButton);
-  startButton({timestamp: 'test'});
+  // startButton({timestamp: 'test'});
+
+
+  var debugEvents = [debugEvent1, debugEvent2, debugEvent3];
+  var debug_i = 0;
+  var events_cancel = setInterval(function() {
+    var evt = debugEvents[debug_i];
+    debug_i++;
+    maybeSendContextRequest(evt);
+    if (debug_i === 3) clearInterval(events_cancel);
+  }, 3000);
+
+
+  // RENDERING LOGIC:
+  // rendering functions should return html or undefined.
+
+  function renderFreebase(results) {
+    var data = results['freebase'];
+    if (!data.desc || !data.desc.length) return;
+    data['geo'] = getBaseHtml('geo', results);
+    return render('freebase', data);
+  }
+
+  function renderUserData(results) {
+  }
+
+  function  renderGoogle(results) {
+    var data = results['google'];
+    return render('google', data);
+  }
+
+  var renderingFunctions = [renderFreebase, renderUserData, renderGoogle];
+  function addResultsTemplates(results) {
+    var result_div = $('#results');
+    templates = [];
+    for (var i in renderingFunctions) {
+      var html = renderingFunctions[i](results);
+      if (html) {
+        result_div.prepend(tmpl('generic_result', {
+          html: html
+        }));
+        return;
+      }
+    }
+  }
+
+  function render(type, data) {
+    return tmpl(type + '_result', {
+      data: data,
+      type: type
+    });
+  }
+
+  function getBaseHtml(type, results) {
+    return render(type, results[type]);
+  }
 });
