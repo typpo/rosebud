@@ -2,7 +2,7 @@ body {
 	font-family: Lato, sans-serif;
 	font-size: 16px;
 	font-weight: 300;
-  line-height: 22px;
+  line-height: 24px;
 }
 
 h1 {
@@ -75,7 +75,8 @@ h1 {
     width: 25px;
   }
  .clear {
- 	clear: both;
+ 	clear: right;
+  display: inline;
  }
  .attribution {
    font-size: 12px;
@@ -97,6 +98,10 @@ h1 {
  .img_base {
    padding: 5px;
    border: 1px solid #CACACA;
+   display: inline-block;
+   float: left;
+   clear: left;
+   margin-right: 10px;
  } /* Reset body padding and margins */
  body { margin:0; padding:0; }
 
@@ -132,12 +137,14 @@ h1 {
 
  #results {
    overflow: auto;
-   height: 500px;
+   height: 700px;
    padding: 20px;
    border-top: 1px solid #ddd;
  }
 
  .result {
+  display: inline-block;
+  padding: 10px;
  }
 
  #right_column {
@@ -145,5 +152,17 @@ h1 {
    float: right;
    box-sizing: border-box;
    padding: 10px;
+   margin-top: 20px;
  }
 
+  .result_gmail {
+  display: inline-block;
+  padding: 5px;
+  font-size: 14px;
+ }
+
+  .subhead {
+  color: #333;
+  font-weight: 700;
+  font-size: 12px;
+ }
