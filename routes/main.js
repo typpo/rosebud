@@ -6,6 +6,11 @@ var dispatch = require('../dispatch.js'),
     readline = require('readline');
 
 exports.index = function(req, res) {
+  /*
+  if (!auth.has_saved_tokens(req)) {
+    res.redirect('/login');
+  }
+  */
   res.render('index', {
     foo: -1,
     partials: {templates: 'templates'},
@@ -18,7 +23,6 @@ exports.query = function(req, res) {
     res.send({error: 'i dont understnand u'});
     return;
   }
-  console.log(query);
   var requests = JSON.parse(query);
   var filteredRequestString = filter.run(requests);
 
@@ -31,11 +35,11 @@ exports.query = function(req, res) {
 
 exports.test = function(req, res) {
   // Try to search this user's gmail acct
-  req.session.foo = true;
   var socrates_gmail = require('../gmail.js');
   if (auth.has_saved_tokens(req)) {
     auth.set_saved_tokens(req);
   }
-  socrates_gmail.search('test');
-  res.send('ok');
+  socrates_gmail.search('test').then(function(resp) {
+    res.send(resp);
+  });
 };

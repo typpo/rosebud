@@ -3,9 +3,11 @@
 var google = require('google'),
     Q = require('q'),
     freebase = require('freebase'),
-    _ = require('underscore');
+    _ = require('underscore'),
+    socrates_gmail = require('./gmail.js');
 
 /** Constants **/
+var SEARCH_TIMEOUT = 4*1000;
 var FREEBASE_KEY_OBJ = {key: 'AIzaSyCvQC_qRXBQDkrP_0dLLKZ3mDU1stM5VEM'};
 var ENABLED_SEARCH_ENGINES = {
                           'google': search_google,
@@ -16,6 +18,7 @@ var ENABLED_SEARCH_ENGINES = {
                           //'related': search_freebase_related,
                           'wiki': search_freebase_wiki_link,
                           'geo': search_freebase_geo,
+                          'gmail': search_gmail,
 };
 
 /** Library setup **/
@@ -33,9 +36,9 @@ exports.process = function(phrase) {
     var promise = fn(phrase);
     Q.when(promise, deferred.resolve);
     setTimeout(function() {
-      //deferred.reject(new Error('Timed out'));
-      deferred.resolve({type: key, error: 'timed out'});
-    }, 3000);
+      console.warn(key, 'timed out');
+      deferred.resolve({type: key, error: 'timed out @ ' + SEARCH_TIMEOUT});
+    }, SEARCH_TIMEOUT);
     return deferred.promise;
   });
   Q.allSettled(searchers).then(function(results) {
@@ -71,7 +74,15 @@ function search_drive(term) {
 }
 
 function search_gmail(term) {
-
+  console.log('Dispatching gmail');
+  var deferred = Q.defer();
+  socrates_gmail.search(term).then(function(resp) {
+    deferred.resolve({
+      threads: resp.threads.slice(0, 10)
+    });
+    console.log('Resolved gmail');
+  });
+  return deferred.promise;
 }
 
 function search_calendar(term) {
