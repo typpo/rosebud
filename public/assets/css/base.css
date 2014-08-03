@@ -4,6 +4,10 @@ body {
 	font-weight: 300;
   line-height: 22px;
 }
+
+h1 {
+  font-size:24px;
+}
   a:link {
     color:#007BFF;
     text-decoration: none;
@@ -105,8 +109,8 @@ body {
  }
 
  .title {
-   font-size: 24px;
-   font-weight: 700;
+   font-size: 32px;
+   font-weight: 300;
    color: #007BFF;
  }
 
