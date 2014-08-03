@@ -22,6 +22,7 @@
     <button id="start_button">
       <img id="start_img" src="/assets/images/mic.gif" alt="Start"></button>
     <div id="results">
+    </div>
   </div>
   <div id="right_column">
   </div>
