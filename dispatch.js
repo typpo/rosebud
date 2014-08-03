@@ -61,7 +61,7 @@ function search_google(term) {
     if (!err && links.length > 0) {
       deferred.resolve(_.extend(links[0], {type: 'google'}));
     } else {
-      deferred.resolve({error: 'Everything sucks'});
+      deferred.resolve({type: 'google', error: 'Everything sucks'});
     }
   });
   return deferred.promise;
@@ -69,10 +69,13 @@ function search_google(term) {
 
 function search_urban_dictionary(term) {
   var deferred = Q.defer();
+  /*
   urban(term).first(function(json) {
     json = json || {};
     deferred.resolve(_.extend(json, {type: 'urban'}));
   });
+ */
+  deferred.resolve({type: 'urban'});
   return deferred.promise;
 }
 

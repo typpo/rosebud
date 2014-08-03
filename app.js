@@ -58,8 +58,12 @@ http.createServer(app).listen(app.get('port'), function(){
 });
 
 var credentials = {key: pk, cert: cert};
-/*
-https.createServer(app, credentials).listen(app.get('port'), function(){
-  console.log("Express server listening on port " + app.get('port'));
+var options = {
+  key: pk,
+  cert: cert,
+  requestCert: false,
+  rejectUnauthorized: false
+};
+https.createServer(options, app).listen(3001, function(){
+  console.log("Express server listening on port " + 3001);
 });
-*/

@@ -1,3 +1,4 @@
+var recognition;
 $(function() {
   var MIN_CONFIDENCE = 0.8;
 
@@ -16,73 +17,76 @@ $(function() {
   var recognizing = false;
   var ignore_onend;
   var start_timestamp;
-  if (!('webkitSpeechRecognition' in window)) {
-    upgrade();
-  } else {
-    start_button.style.display = 'inline-block';
-    var recognition = new webkitSpeechRecognition();
-    recognition.continuous = true;
-    recognition.interimResults = true;
+  function init() {
+    if (!('webkitSpeechRecognition' in window)) {
+      upgrade();
+    } else {
+      start_button.style.display = 'inline-block';
+      recognition = new webkitSpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
 
-    recognition.onstart = function() {
-      recognizing = true;
-      start_img.src = '/assets/images/mic-animate.gif';
-    };
+      recognition.onstart = function() {
+        recognizing = true;
+        start_img.src = '/assets/images/mic-animate.gif';
+      };
 
-    recognition.onerror = function(event) {
-      if (event.error == 'no-speech') {
-        start_img.src = '/assets/images/mic.gif';
-        ignore_onend = true;
-      }
-      if (event.error == 'audio-capture') {
-        start_img.src = '/assets/images/mic.gif';
-        ignore_onend = true;
-      }
-      if (event.error == 'not-allowed') {
-        if (event.timeStamp - start_timestamp < 100) {
-        } else {
+      recognition.onerror = function(event) {
+        if (event.error == 'no-speech') {
+          start_img.src = '/assets/images/mic.gif';
+          ignore_onend = true;
         }
-        ignore_onend = true;
-      }
-    };
-
-    recognition.onend = function() {
-      recognizing = false;
-      if (ignore_onend) {
-        return;
-      }
-      start_img.src = '/assets/images/mic.gif';
-      if (!final_transcript) {
-        return;
-      }
-      if (window.getSelection) {
-        window.getSelection().removeAllRanges();
-        var range = document.createRange();
-        //range.selectNode(document.getElementById('final_span'));
-        window.getSelection().addRange(range);
-      }
-    };
-
-    recognition.onresult = function(event) {
-      var interim_transcript = '';
-      maybeSendContextRequest(event);
-      for (var i = event.resultIndex; i < event.results.length; ++i) {
-        var transcript = event.results[i][0].transcript;
-        if (event.results[i].isFinal) {
-          final_transcript += transcript;
-        } else {
-          interim_transcript += transcript;
+        if (event.error == 'audio-capture') {
+          start_img.src = '/assets/images/mic.gif';
+          ignore_onend = true;
         }
-      }
-      final_transcript = capitalize(final_transcript);
-      //var final_span = document.getElementById('final_span');
-      //final_span.innerHTML = linebreak(final_transcript);
-      //interim_span.innerHTML = linebreak(interim_transcript);
-      if (final_transcript || interim_transcript) {
-        showButtons('inline-block');
-      }
-    };
+        if (event.error == 'not-allowed') {
+          if (event.timeStamp - start_timestamp < 100) {
+          } else {
+          }
+          ignore_onend = true;
+        }
+      };
+
+      recognition.onend = function() {
+        recognizing = false;
+        if (ignore_onend) {
+          return;
+        }
+        start_img.src = '/assets/images/mic.gif';
+        if (!final_transcript) {
+          return;
+        }
+        if (window.getSelection) {
+          window.getSelection().removeAllRanges();
+          var range = document.createRange();
+          //range.selectNode(document.getElementById('final_span'));
+          window.getSelection().addRange(range);
+        }
+      };
+
+      recognition.onresult = function(event) {
+        var interim_transcript = '';
+        maybeSendContextRequest(event);
+        for (var i = event.resultIndex; i < event.results.length; ++i) {
+          var transcript = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            final_transcript += transcript;
+          } else {
+            interim_transcript += transcript;
+          }
+        }
+        final_transcript = capitalize(final_transcript);
+        //var final_span = document.getElementById('final_span');
+        //final_span.innerHTML = linebreak(final_transcript);
+        //interim_span.innerHTML = linebreak(interim_transcript);
+        if (final_transcript || interim_transcript) {
+          showButtons('inline-block');
+        }
+      };
+    }
   }
+  init();
 
   function upgrade() {
     start_button.style.visibility = 'hidden';
@@ -131,7 +135,12 @@ $(function() {
    * Talk to the backend with the speech that we have and get results.
    */
   function getContext(results) {
+    console.log(results.transcript);
     queried[results.transcript] = true;
+    recognition.stop();
+    init();
+    startButton({timestamp: 'test'});
+
     $.ajax({
       type: 'GET',
       url: '/search?q=' + JSON.stringify(results),
@@ -283,6 +292,7 @@ $(function() {
     var data = results['freebase'];
     if (!data.desc || !data.desc.length) return;
     data['geo'] = getBaseHtml('geo', results);
+    data['image'] = getBaseHtml('image', results);
     return render('freebase', data);
   }
 
@@ -296,6 +306,7 @@ $(function() {
 
   function  renderGoogle(results) {
     var data = results['google'];
+    data['image'] = getBaseHtml('image', results);
     return render('google', data);
   }
 

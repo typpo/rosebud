@@ -5,12 +5,14 @@
 </script>
 
 <script type="text/html" id="google_result">
+<%=data.image%>
   <div class="title"><a href="<%=data.href%>" target="_blank"><%=data.title%></a></div>
   <div class="clear"><%=data.description%></div>
   <div class="clear attribution">provided by <%=data.type%></div>
 </script>
 
 <script type="text/html" id="freebase_result">
+  <%=data.image%>
   <div class="clear"><%=data.desc%></div>
   <div class="clear attribution">provided by <%=data.type%></div>
 </script>
@@ -22,8 +24,10 @@
 </script>
 
 <script type="text/html" id="image_result">
-<div class="img_base"><%=data.image%></div>
-  <div class="clear attribution">provided by <%=data.type%></div>
+  <% if (data.url) { %>
+    <img class="img_base" src="<%=data.url%>">
+    <div class="clear attribution">provided by <%=data.type%></div>
+  <% } %>
 </script>
 
 <script type="text/html" id="defs_result">
@@ -42,7 +46,7 @@
   <div class="clear attribution">provided by <%=data.type%></div>
 </script>
 
-<script type="text/html" id="gmail">
+<script type="text/html" id="gmail_result">
 <% for ( var i = 0; i < data.threads.length; i++ ) { %>
   <div class="clear"><a href="<%=data.threads[i].url%>"><%=data.threads[i].snippet%></a></div>
   <% } %>
