@@ -165,6 +165,10 @@ h1 {
   font-size: 14px;
  }
 
+.result:hover {
+  cursor: pointer;
+}
+
   .subhead {
   color: #333;
   font-weight: 700;
