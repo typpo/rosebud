@@ -3,12 +3,12 @@
 </script>
 
 <script type="text/html" id="google_result">
-<a href="<%=href%>"><%=title%></a>
-<div class="clear"><%=description%></div>
-<div cleass="clear">provided by <%=type%></div>
+  <a href="<%=href%>"><%=title%></a>
+  <div class="clear"><%=description%></div>
+  <div class="clear">provided by <%=type%></div>
 </script>
 
 <script type="text/html" id="freebase_result">
-<div class="clear"><%=desc%></div>
-<div class="clear">provided by <%=type%></div>
+  <div class="clear"><%=desc%></div>
+  <div class="clear">provided by <%=type%></div>
 </script>
