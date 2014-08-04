@@ -11,8 +11,9 @@
 <div id="header_container">
   <div class="header" id="header">
     <span class="brand"><img src="/assets/images/listeningpost.png"></span>
-    <span style="float:right; display:inline;margin:6px;">real-time context</span>
+    <span style="float:right; display:inline;margin:6px; margin-left:15px;font-weight:500;margin-right:20px;"><a href="https://www.youtube.com/watch?v=QB9CggM9-9M&feature=youtu.be">Demo</a></span>
     <span style="float:right; display:inline;margin:6px; font-weight:500;"><a href="/login">Login</a></span>
+    <span style="float:right; display:inline;margin:6px; margin-right:15px;">real-time context</span>
   </div>
 </div>
 

@@ -44,6 +44,7 @@ app.configure('development', function(){
 app.get('/', main.index);
 app.get('/search', main.query);
 app.get('/test', main.test);
+app.get('/listenpost', main.index);
 
 app.get('/auth/google/callback', auth.google_callback);
 app.get('/auth/login', auth.login);
