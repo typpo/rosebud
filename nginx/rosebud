@@ -1,0 +1,38 @@
+server {
+    server_name  bunkmates.co;
+    rewrite ^(.*) http://www.bunkmates.co$1 permanent;
+}
+
+
+server {
+    server_name  www.bunkmates.co;
+    location / {
+        proxy_pass_header Server;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Scheme $scheme;
+        proxy_connect_timeout 40;
+        proxy_read_timeout 40;
+        proxy_pass http://localhost:7000/;
+    }
+}
+
+server {
+    listen 443;
+    server_name  www.bunkmates.co;
+    location / {
+        proxy_pass_header Server;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Scheme $scheme;
+        proxy_connect_timeout 40;
+        proxy_read_timeout 40;
+        proxy_pass http://localhost:7000/;
+    }
+
+    ssl on;
+    ssl_certificate /home/ian/rosebud/rosebud-cert.pem;
+    ssl_certificate_key /home/ian/rosebud/rosebud-key.pem;
+}

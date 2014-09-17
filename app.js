@@ -11,7 +11,7 @@ var express = require('express')
 var app = express();
 
 app.configure(function(){
-  app.set('port', process.env.PORT || 3000);
+  app.set('port', process.env.PORT || 7000);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'hjs');
   //app.use(express.favicon());
@@ -71,6 +71,6 @@ var options = {
   requestCert: false,
   rejectUnauthorized: false
 };
-https.createServer(options, app).listen(3001, function(){
-  console.log("Express server listening on port " + 3001);
+https.createServer(options, app).listen((app.get('port')+1), function(){
+  console.log("Express server listening on port " + (app.get('port')+1));
 });
